@@ -78,7 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Glide.with(activity)
                 .load(posterURL)
                 .crossFade()
-                .centerCrop()
+
                 .fitCenter()
                 .into(new GlideDrawableImageViewTarget(moviePoster) {
                     @Override
