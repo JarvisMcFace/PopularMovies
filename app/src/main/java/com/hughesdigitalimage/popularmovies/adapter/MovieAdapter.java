@@ -71,13 +71,15 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //        Glide.with(activity)
 //                .load(posterURL)
 //                .dontAnimate()
+//
 //                .into(moviePoster);
 
 
         Glide.with(activity)
                 .load(posterURL)
-                .dontAnimate()
-
+                .crossFade()
+                .centerCrop()
+                .fitCenter()
                 .into(new GlideDrawableImageViewTarget(moviePoster) {
                     @Override
                     public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {

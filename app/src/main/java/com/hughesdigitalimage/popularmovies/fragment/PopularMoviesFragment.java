@@ -31,7 +31,7 @@ import okhttp3.Response;
 
 public class PopularMoviesFragment extends Fragment {
 
-    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w400";
+    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
     private static String TAG = "PopularMoviesFragment";
 
@@ -62,7 +62,6 @@ public class PopularMoviesFragment extends Fragment {
 
         String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_API_DB_KEY;
 
-
         OkHttpHelper okHttpHelper = new OkHttpHelper();
         okHttpHelper.execute(url);
     }
@@ -82,8 +81,6 @@ public class PopularMoviesFragment extends Fragment {
         contextWeakReference =  new WeakReference<Activity>(getActivity());
         adapter = new MovieAdapter(moviesTOList,contextWeakReference);
         recyclerView.setAdapter(adapter);
-
-
 
         Log.d(TAG, "onActivityCreated() called with: savedInstanceState = [" + result + "]");
     }
