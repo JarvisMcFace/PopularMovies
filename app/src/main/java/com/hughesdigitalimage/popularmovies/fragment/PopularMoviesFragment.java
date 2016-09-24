@@ -1,9 +1,11 @@
 package com.hughesdigitalimage.popularmovies.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,8 @@ import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
 import com.hughesdigitalimage.popularmovies.to.MoviesTO;
 import com.hughesdigitalimage.popularmovies.to.ResultTO;
+import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
+import com.hughesdigitalimage.popularmovies.util.RecyclerViewItemDecorator;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -31,7 +35,7 @@ import okhttp3.Response;
 
 public class PopularMoviesFragment extends Fragment {
 
-    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
+    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w325";
 
     private static String TAG = "PopularMoviesFragment";
 
@@ -56,14 +60,29 @@ public class PopularMoviesFragment extends Fragment {
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
+        int spaceInPixels = 0;
+        recyclerView.addItemDecoration(new RecyclerViewItemDecorator(spaceInPixels));
+
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
 
         String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_API_DB_KEY;
 
-        OkHttpHelper okHttpHelper = new OkHttpHelper();
-        okHttpHelper.execute(url);
+        if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity())) ) {
+
+          if (adapter== null){
+              OkHttpHelper okHttpHelper = new OkHttpHelper();
+              okHttpHelper.execute(url);
+          } else {
+              contextWeakReference =  new WeakReference<Activity>(getActivity());
+              adapter = new MovieAdapter(moviesTOList,contextWeakReference);
+              recyclerView.setAdapter(adapter);
+          }
+        }else {
+            Snackbar.make(rootView,"No Network Connection Please try again",Snackbar.LENGTH_SHORT).show();
+        }
+
     }
 
     private void performOnPostExecute(String jsonResults) {
