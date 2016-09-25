@@ -4,7 +4,8 @@
 
 
 
-    <string name="popular_movies">http://api.themoviedb.org/3/movie/popular?api_key=</string>
+    <string name="popular_movies_url">http://api.themoviedb.org/3/movie/popular?api_key=</string>
+    <string name="movie_basic_informaiton_url">http://api.themoviedb.org/3/movie/%1s?api_key=</string>
 
 
 </resources>

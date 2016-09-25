@@ -7,7 +7,7 @@ import android.widget.ProgressBar;
 
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsCallbacks;
-import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 
 import java.lang.ref.WeakReference;
 
@@ -19,7 +19,7 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     private ImageView moviePoster;
     private ProgressBar progressSpinner;
-    private MovieDetailsTO movieDetailsTO;
+    private PopularMovieDetailsTO popularMovieDetailsTO;
     private WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks;
 
     public MovieViewHolder(View view, WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks){
@@ -52,19 +52,19 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
         this.progressSpinner = progressSpinner;
     }
 
-    public MovieDetailsTO getMovieDetailsTO() {
-        return movieDetailsTO;
+    public PopularMovieDetailsTO getPopularMovieDetailsTO() {
+        return popularMovieDetailsTO;
     }
 
-    public void setMovieDetailsTO(MovieDetailsTO movieDetailsTO) {
-        this.movieDetailsTO = movieDetailsTO;
+    public void setPopularMovieDetailsTO(PopularMovieDetailsTO popularMovieDetailsTO) {
+        this.popularMovieDetailsTO = popularMovieDetailsTO;
     }
 
     @Override
     public void onClick(View v) {
 
         MovieDetailsCallbacks movieDetailsCallbacks = weakMovieDetailsCallbacks.get();
-        movieDetailsCallbacks.onMovieSelected(movieDetailsTO);
+        movieDetailsCallbacks.onMovieSelected(popularMovieDetailsTO);
 
     }
 }

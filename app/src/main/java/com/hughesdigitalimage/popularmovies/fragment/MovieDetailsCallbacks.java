@@ -1,6 +1,6 @@
 package com.hughesdigitalimage.popularmovies.fragment;
 
-import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 
 /**
  * Created by David on 9/24/16.
@@ -8,5 +8,5 @@ import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
 
 public interface MovieDetailsCallbacks {
 
-    void onMovieSelected(MovieDetailsTO movieDetailsTO);
+    void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO);
 }

@@ -16,8 +16,8 @@ import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.activity.MovieDetailsActivity;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
-import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
-import com.hughesdigitalimage.popularmovies.to.MoviesTO;
+import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.to.PopularMoviesTO;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
@@ -38,8 +38,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private String result;
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
-    private List<MovieDetailsTO> moviesTOList;
-    private MoviesTO moviesTO;
+    private List<PopularMovieDetailsTO> moviesTOList;
+    private PopularMoviesTO popularMoviesTO;
 
     @Nullable
     @Override
@@ -59,7 +59,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        String url = getString(R.string.popular_movies) + GetTheMoveDatabaseAPIKey.execute(getResources());
+        String url = getString(R.string.popular_movies_url) + GetTheMoveDatabaseAPIKey.execute(getResources());
 
         if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity())) ) {
             if (adapter== null) {
@@ -80,10 +80,10 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     @Override
-    public void onMovieSelected(MovieDetailsTO movieDetailsTO) {
+    public void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO) {
 
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-        intent.putExtra("Test",movieDetailsTO);
+        intent.putExtra("Test", popularMovieDetailsTO);
         startActivity(intent);
 
     }
@@ -92,12 +92,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     public void performOnPostExecute(String jsonResults) {
 
         Gson gson = new Gson();
-        moviesTO = gson.fromJson(jsonResults,MoviesTO.class);
+        popularMoviesTO = gson.fromJson(jsonResults,PopularMoviesTO.class);
 
         if (moviesTOList == null) {
-            moviesTOList = new ArrayList<>(moviesTO.getResults());
+            moviesTOList = new ArrayList<>(popularMoviesTO.getResults());
         } else {
-            moviesTOList.addAll(moviesTO.getResults());
+            moviesTOList.addAll(popularMoviesTO.getResults());
         }
         loadData();
     }
