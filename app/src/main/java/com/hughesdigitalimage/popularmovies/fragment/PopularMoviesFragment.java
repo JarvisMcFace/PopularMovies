@@ -118,8 +118,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         loadData();
     }
 
-
-
     public class OkHttpHelper extends AsyncTask<String, Void, String> {
 
         OkHttpClient client = new OkHttpClient();
