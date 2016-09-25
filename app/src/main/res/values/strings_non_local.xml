@@ -3,4 +3,8 @@
     <string name="the_movie_db_api"></string>
 
 
+
+    <string name="popular_movies">http://api.themoviedb.org/3/movie/popular?api_key=</string>
+
+
 </resources>

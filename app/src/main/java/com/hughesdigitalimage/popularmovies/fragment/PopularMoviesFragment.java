@@ -2,14 +2,12 @@ package com.hughesdigitalimage.popularmovies.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +20,15 @@ import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.MoviesTO;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
+import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
+import com.hughesdigitalimage.popularmovies.util.OkHttpHelperCallback;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-
-public class PopularMoviesFragment extends Fragment implements MovieDetailsCallbacks {
+public class PopularMoviesFragment extends Fragment implements MovieDetailsCallbacks,OkHttpHelperCallback {
 
     public final static String MOVIE_DB_POSTER_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
@@ -64,11 +59,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + GetTheMoveDatabaseAPIKey.execute(getResources());
+        String url = getString(R.string.popular_movies) + GetTheMoveDatabaseAPIKey.execute(getResources());
 
         if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity())) ) {
             if (adapter== null) {
-                OkHttpHelper okHttpHelper = new OkHttpHelper();
+                WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
+                OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
                 okHttpHelper.execute(url);
             }
         }else {
@@ -92,17 +88,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     }
 
-    private void loadData() {
-
-        if ( moviesTOList != null) {
-            WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
-            WeakReference<PopularMoviesFragment> weakPopularMoviesFragment =  new WeakReference<PopularMoviesFragment>(this);
-            adapter = new MovieAdapter(moviesTOList,weakPopularMoviesFragment,weakMovieDetailsCallbacks);
-            recyclerView.setAdapter(adapter);
-        }
-    }
-
-    private void performOnPostExecute(String jsonResults) {
+    @Override
+    public void performOnPostExecute(String jsonResults) {
 
         Gson gson = new Gson();
         moviesTO = gson.fromJson(jsonResults,MoviesTO.class);
@@ -115,33 +102,45 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         loadData();
     }
 
-    public class OkHttpHelper extends AsyncTask<String, Void, String> {
+    private void loadData() {
 
-        OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            Request.Builder builder = new Request.Builder();
-            builder.url(params[0]);
-
-            Request request = builder.build();
-
-            Response response = null;
-            try {
-                response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (IOException e) {
-                Log.e("OkHttpHelper", "doInBackground: ", e);
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResults) {
-          performOnPostExecute(jsonResults);
+        if ( moviesTOList != null) {
+            WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
+            WeakReference<PopularMoviesFragment> weakPopularMoviesFragment =  new WeakReference<PopularMoviesFragment>(this);
+            adapter = new MovieAdapter(moviesTOList,weakPopularMoviesFragment,weakMovieDetailsCallbacks);
+            recyclerView.setAdapter(adapter);
         }
     }
+
+
+
+//    public class OkHttpHelper extends AsyncTask<String, Void, String> {
+//
+//        OkHttpClient client = new OkHttpClient();
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//
+//            Request.Builder builder = new Request.Builder();
+//            builder.url(params[0]);
+//
+//            Request request = builder.build();
+//
+//            Response response = null;
+//            try {
+//                response = client.newCall(request).execute();
+//                return response.body().string();
+//            } catch (IOException e) {
+//                Log.e("OkHttpHelper", "doInBackground: ", e);
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String jsonResults) {
+//          performOnPostExecute(jsonResults);
+//        }
+//    }
 
 }
