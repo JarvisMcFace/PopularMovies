@@ -147,6 +147,4 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         }
     }
 
-
-
 }
