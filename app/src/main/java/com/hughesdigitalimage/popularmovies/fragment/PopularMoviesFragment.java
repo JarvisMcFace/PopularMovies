@@ -15,14 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.hughesdigitalimage.popularmovies.BuildConfig;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.activity.MovieDetailsActivity;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
 import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.MoviesTO;
+import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
-import com.hughesdigitalimage.popularmovies.util.RecyclerViewItemDecorator;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -36,7 +35,7 @@ import okhttp3.Response;
 
 public class PopularMoviesFragment extends Fragment implements MovieDetailsCallbacks {
 
-    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
+    public final static String MOVIE_DB_POSTER_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
     private static String TAG = "PopularMoviesFragment";
 
@@ -60,14 +59,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
-        int spaceInPixels = 0;
-        recyclerView.addItemDecoration(new RecyclerViewItemDecorator(spaceInPixels));
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-
-        String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_API_DB_KEY;
+        String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + GetTheMoveDatabaseAPIKey.execute(getResources());
 
         if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity())) ) {
             if (adapter== null) {

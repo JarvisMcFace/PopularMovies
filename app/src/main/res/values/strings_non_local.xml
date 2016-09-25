@@ -1,4 +1,6 @@
 <resources>
 
-    <string name="the_movie_db_api">B</string>
+    <string name="the_movie_db_api"></string>
+
+
 </resources>

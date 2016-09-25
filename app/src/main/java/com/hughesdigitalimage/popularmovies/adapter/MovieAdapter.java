@@ -7,16 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.adapter.viewholder.MovieViewHolder;
 import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsCallbacks;
 import com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment;
 import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;
 import com.hughesdigitalimage.popularmovies.util.StringUtils;
 
 import java.lang.ref.WeakReference;
@@ -62,22 +58,11 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         movieViewHolder.setMovieDetailsTO(movieDetailsTO);
 
         String moviePosterPath = movieDetailsTO.getPosterPath();
-        String retrievePosterURL = PopularMoviesFragment.MOVIE_DB_IMAGE_URL + moviePosterPath;
+        String retrievePosterURL = PopularMoviesFragment.MOVIE_DB_POSTER_IMAGE_URL + moviePosterPath;
 
         if (StringUtils.isNotEmpty(moviePosterPath)) {
             PopularMoviesFragment fragment = weakPopularMoviesFragment.get();
-            Glide.with(fragment)
-                    .load(retrievePosterURL)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .fitCenter()
-                    .into(new GlideDrawableImageViewTarget(moviePoster) {
-                        @Override
-                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                            super.onResourceReady(drawable, anim);
-                            progressSpinner.setVisibility(View.GONE);
-                        }
-                    });
+            FetchMoviePoster.execute(fragment,retrievePosterURL,moviePoster,progressSpinner);
         }
 
     }
