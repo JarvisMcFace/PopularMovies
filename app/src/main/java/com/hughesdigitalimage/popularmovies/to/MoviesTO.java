@@ -15,7 +15,7 @@ public class MoviesTO implements Serializable{
     private static final long serialVersionUID = -3748871556194934840L;
 
     private Integer page;
-    private List<ResultTO> results = new ArrayList<ResultTO>();
+    private List<MovieDetailsTO> results = new ArrayList<MovieDetailsTO>();
     @SerializedName("total_results")
     private Integer totalResults;
     @SerializedName("total_pages")
@@ -29,11 +29,11 @@ public class MoviesTO implements Serializable{
         this.page = page;
     }
 
-    public List<ResultTO> getResults() {
+    public List<MovieDetailsTO> getResults() {
         return results;
     }
 
-    public void setResults(List<ResultTO> results) {
+    public void setResults(List<MovieDetailsTO> results) {
         this.results = results;
     }
 

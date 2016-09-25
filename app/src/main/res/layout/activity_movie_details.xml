@@ -10,11 +10,10 @@
         layout="@layout/layout_appbar" />
 
     <fragment
-        android:id="@+id/popular_movie_fragment"
-        android:name="com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment"
+        android:id="@+id/movie_detail_fragment"
+        android:name="com.hughesdigitalimage.popularmovies.fragment.MovieDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/app_bar_layout"
-        tools:layout="@layout/fragment_popular_movies" />
+        android:layout_below="@id/app_bar_layout" />
 
 </RelativeLayout>

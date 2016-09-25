@@ -13,11 +13,16 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.PopularMoviesActivity"
-            android:label="@string/title_activity_popular_movies">
+            android:label="@string/activity_popular_movies_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.MovieDetailsActivity"
+            android:label="@string/activity_popular_movies_title">
         </activity>
     </application>
 

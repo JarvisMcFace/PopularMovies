@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="title_activity_popular_movies">PopularMoviesActivity</string>
+    <string name="activity_popular_movies_title">Popular Movies</string>
+    <string name="activity_movie_detials_title">Movie Details</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

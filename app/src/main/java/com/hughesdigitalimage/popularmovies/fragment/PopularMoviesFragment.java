@@ -1,7 +1,7 @@
 package com.hughesdigitalimage.popularmovies.fragment;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,9 +17,10 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.BuildConfig;
 import com.hughesdigitalimage.popularmovies.R;
+import com.hughesdigitalimage.popularmovies.activity.MovieDetailsActivity;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
+import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.MoviesTO;
-import com.hughesdigitalimage.popularmovies.to.ResultTO;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
 import com.hughesdigitalimage.popularmovies.util.RecyclerViewItemDecorator;
 
@@ -33,19 +34,18 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class PopularMoviesFragment extends Fragment {
+public class PopularMoviesFragment extends Fragment implements MovieDetailsCallbacks {
 
-    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w325";
+    public final static String MOVIE_DB_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
     private static String TAG = "PopularMoviesFragment";
-
 
     private View rootView;
     private String result;
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
-    private List<ResultTO> moviesTOList;
-    private WeakReference<Activity> contextWeakReference;
+    private List<MovieDetailsTO> moviesTOList;
+    private MoviesTO moviesTO;
 
     @Nullable
     @Override
@@ -70,39 +70,55 @@ public class PopularMoviesFragment extends Fragment {
         String url = "http://api.themoviedb.org/3/movie/popular?api_key=" + BuildConfig.THE_MOVIE_API_DB_KEY;
 
         if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity())) ) {
-
-          if (adapter== null){
-              OkHttpHelper okHttpHelper = new OkHttpHelper();
-              okHttpHelper.execute(url);
-          } else {
-              contextWeakReference =  new WeakReference<Activity>(getActivity());
-              adapter = new MovieAdapter(moviesTOList,contextWeakReference);
-              recyclerView.setAdapter(adapter);
-          }
+            if (adapter== null) {
+                OkHttpHelper okHttpHelper = new OkHttpHelper();
+                okHttpHelper.execute(url);
+            }
         }else {
             Snackbar.make(rootView,"No Network Connection Please try again",Snackbar.LENGTH_SHORT).show();
         }
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    @Override
+    public void onMovieSelected(MovieDetailsTO movieDetailsTO) {
+
+        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+        intent.putExtra("Test",movieDetailsTO);
+        startActivity(intent);
+
+    }
+
+    private void loadData() {
+
+        if ( moviesTOList != null) {
+            WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
+            WeakReference<PopularMoviesFragment> weakPopularMoviesFragment =  new WeakReference<PopularMoviesFragment>(this);
+            adapter = new MovieAdapter(moviesTOList,weakPopularMoviesFragment,weakMovieDetailsCallbacks);
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
     private void performOnPostExecute(String jsonResults) {
-        result = jsonResults;
 
         Gson gson = new Gson();
-        MoviesTO moviesTO = gson.fromJson(result,MoviesTO.class);
+        moviesTO = gson.fromJson(jsonResults,MoviesTO.class);
 
         if (moviesTOList == null) {
             moviesTOList = new ArrayList<>(moviesTO.getResults());
         } else {
             moviesTOList.addAll(moviesTO.getResults());
         }
-
-        contextWeakReference =  new WeakReference<Activity>(getActivity());
-        adapter = new MovieAdapter(moviesTOList,contextWeakReference);
-        recyclerView.setAdapter(adapter);
-
-        Log.d(TAG, "onActivityCreated() called with: savedInstanceState = [" + result + "]");
+        loadData();
     }
+
+
 
     public class OkHttpHelper extends AsyncTask<String, Void, String> {
 

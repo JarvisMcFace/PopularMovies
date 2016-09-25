@@ -10,7 +10,7 @@ import java.util.List;
  * Created by David on 9/21/16.
  */
 
-public class ResultTO implements Serializable {
+public class MovieDetailsTO implements Serializable {
 
     private static final long serialVersionUID = 3087732908469661933L;
 
