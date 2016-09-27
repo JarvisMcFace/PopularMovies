@@ -34,7 +34,6 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.moveResults = moveResults;
         this.weakPopularMoviesFragment = weakPopularMoviesFragment;
         this.weakMovieDetailsCallbacks = weakMovieDetailsCallbacks;
-
     }
 
     @Override
@@ -54,6 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final ImageView moviePoster = movieViewHolder.getMoviePoster();
         final ProgressBar progressSpinner = movieViewHolder.getProgressSpinner();
 
+
         PopularMovieDetailsTO popularMovieDetailsTO = moveResults.get(position);
         movieViewHolder.setPopularMovieDetailsTO(popularMovieDetailsTO);
 
@@ -72,4 +72,6 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getItemCount() {
         return moveResults.size();
     }
+
+
 }

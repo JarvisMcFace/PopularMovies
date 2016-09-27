@@ -3,6 +3,10 @@
     <string name="activity_popular_movies_title">Popular Movies</string>
     <string name="activity_movie_detials_title">Movie Details</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_menu">Sort Movies</string>
+    <string name="sort_most_popular">Most popular</string>
+    <string name="sort_most_least_popular">Least popular</string>
+    <string name="sort_top_rated">Top rated</string>
 </resources>
