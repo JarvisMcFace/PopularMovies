@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +84,6 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     @Override
     public void performOnPostExecute(String jsonResults) {
-        Log.d(TAG, "performOnPostExecute: ");
         Gson gson = new Gson();
         moviesTO = gson.fromJson(jsonResults, MoviesTO.class);
         loadData();
@@ -112,13 +111,17 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     }
 
     private void fetchMovieDetails() {
-        String movieID = String.valueOf(popularMovieDetailsTO.getId());
-        if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
-            WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
-            OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
-            okHttpHelper.execute(urlMovieDetails);
+
+        if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
+            Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
+            return;
         }
+
+        String movieID = String.valueOf(popularMovieDetailsTO.getId());
+        String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
+        WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
+        OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
+        okHttpHelper.execute(urlMovieDetails);
     }
 
     private String getReleaseDate() {

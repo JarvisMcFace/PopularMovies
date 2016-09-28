@@ -93,12 +93,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-   //     loadData();
-    }
-
-    @Override
     public void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO) {
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
@@ -121,7 +115,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void fetchPopularMovies() {
         if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            Snackbar.make(rootView, "No Network Connection Please try again", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
