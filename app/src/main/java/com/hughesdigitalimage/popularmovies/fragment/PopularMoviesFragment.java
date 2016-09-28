@@ -64,24 +64,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        String url = getString(R.string.popular_movies_url) + GetTheMoveDatabaseAPIKey.execute(getResources());
-
-        if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            if (adapter == null) {
-                WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
-                OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
-                okHttpHelper.execute(url);
-            }
-        } else {
-            Snackbar.make(rootView, "No Network Connection Please try again", Snackbar.LENGTH_SHORT).show();
-        }
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadData();
+        fetchPopularMovies();
     }
 
 
@@ -106,18 +89,20 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             sortByTopRated();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+   //     loadData();
+    }
 
     @Override
     public void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO) {
-
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-        intent.putExtra("Test", popularMovieDetailsTO);
+        intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
         startActivity(intent);
-
     }
 
     @Override
@@ -132,6 +117,22 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             moviesTOList.addAll(popularMoviesTO.getResults());
         }
         loadData();
+    }
+
+    private void fetchPopularMovies() {
+        if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
+            Snackbar.make(rootView, "No Network Connection Please try again", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        String url = getString(R.string.popular_movies_url) + GetTheMoveDatabaseAPIKey.execute(getResources());
+        if (adapter == null) {
+            WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
+            OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
+            okHttpHelper.execute(url);
+        } else {
+            loadData();
+        }
     }
 
     private void sortByMostPopular() {
@@ -152,10 +153,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void loadData() {
 
+
+
         if (moviesTOList != null) {
             WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
-            WeakReference<PopularMoviesFragment> weakPopularMoviesFragment = new WeakReference<PopularMoviesFragment>(this);
-            adapter = new MovieAdapter(moviesTOList, weakPopularMoviesFragment, weakMovieDetailsCallbacks);
+            WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
+            adapter = new MovieAdapter(moviesTOList, contextWeakReference, weakMovieDetailsCallbacks);
 
             recyclerView.setAdapter(adapter);
         }

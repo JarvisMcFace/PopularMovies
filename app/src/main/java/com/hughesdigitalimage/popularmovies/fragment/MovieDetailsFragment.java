@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,8 @@ import java.util.Date;
 
 public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallback {
 
-    public final static String MOVIE_DB_DETAILS_IMAGE_URL = "http://image.tmdb.org/t/p/w92";
+    public final static String MOVIE_DB_DETAILS_IMAGE_URL = "http://image.tmdb.org/t/p/w154";
+    public static final String EXTRA_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.fragment.movieFragment.movieDetails";
     private static String TAG = "MovieDetailsFragment";
 
     private View rootView;
@@ -42,7 +44,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private TextView title;
     private TextView year;
     private TextView runningTime;
-    private TextView userRating;
+    private TextView voteAverage;
     private TextView overview;
 
 
@@ -64,7 +66,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
-            popularMovieDetailsTO = (PopularMovieDetailsTO) bundle.getSerializable("Test");
+            popularMovieDetailsTO = (PopularMovieDetailsTO) bundle.getSerializable(EXTRA_MOVIE_DETAILS_TO);
         }
 
         title = (TextView) rootView.findViewById(R.id.movie_title);
@@ -73,49 +75,50 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
         year = (TextView) rootView.findViewById(R.id.details_movie_year);
         runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
-        userRating = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
+        voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
         overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
+
+        fetchMovieDetails();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadData();
-    }
 
     @Override
     public void performOnPostExecute(String jsonResults) {
-
+        Log.d(TAG, "performOnPostExecute: ");
         Gson gson = new Gson();
-        moviesTO = gson.fromJson(jsonResults,MoviesTO.class);
-
-        runningTime.setText(moviesTO.getRuntime().toString());
-
+        moviesTO = gson.fromJson(jsonResults, MoviesTO.class);
+        loadData();
     }
 
     private void loadData() {
 
-        String releaseDate = getReleaseDate();
+        String retrievePosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getPosterPath();
+        WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
+
+        FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinner);
+
+        if (moviesTO != null) {
+            String releaseDate = getReleaseDate();
+            title.setText(popularMovieDetailsTO.getTitle());
+            year.setText(releaseDate);
+            overview.setText(popularMovieDetailsTO.getOverview());
+
+            String runningMinutes = getString(R.string.running_time, String.valueOf(moviesTO.getRuntime()));
+            runningTime.setText(runningMinutes);
+            String voteAverageDisplayed = getString(R.string.user_rating, String.valueOf(moviesTO.getVoteAverage()));
+            voteAverage.setText(voteAverageDisplayed);
+        }
+
+    }
+
+    private void fetchMovieDetails() {
         String movieID = String.valueOf(popularMovieDetailsTO.getId());
-
         if (NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            String urlMovieDetails = getString(R.string.movie_basic_informaiton_url,movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
-
+            String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
             WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
             OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
             okHttpHelper.execute(urlMovieDetails);
         }
-
-
-        year.setText(releaseDate);
-        runningTime.setText("120min");
-        userRating.setText(popularMovieDetailsTO.getVoteAverage().toString());
-        overview.setText(popularMovieDetailsTO.getOverview());
-
-        title.setText(popularMovieDetailsTO.getTitle());
-        String retrievePosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getPosterPath();
-        FetchMoviePoster.execute(this, retrievePosterURL, detailPoster, progressSpinner);
-
     }
 
     private String getReleaseDate() {

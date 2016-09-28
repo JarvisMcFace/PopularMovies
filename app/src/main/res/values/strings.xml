@@ -9,4 +9,6 @@
     <string name="sort_most_popular">Most popular</string>
     <string name="sort_most_least_popular">Least popular</string>
     <string name="sort_top_rated">Top rated</string>
+    <string name="running_time">%1s minutes</string>
+    <string name="user_rating">%1s / 10</string>
 </resources>

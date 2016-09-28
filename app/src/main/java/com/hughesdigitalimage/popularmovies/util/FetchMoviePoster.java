@@ -1,6 +1,6 @@
 package com.hughesdigitalimage.popularmovies.util;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -11,15 +11,23 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by David on 9/24/16.
  */
 
 public class FetchMoviePoster {
 
-    public static void execute(Fragment fragment, String posterURL, ImageView imageView, final ProgressBar progressBar) {
+    public static void execute(WeakReference<Context> contextWeakReference , String posterURL, ImageView imageView, final ProgressBar progressBar) {
 
-        Glide.with(fragment)
+        Context context = contextWeakReference.get();
+
+        if (context == null) {
+            return;
+        }
+
+        Glide.with(context)
                 .load(posterURL)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

@@ -20,7 +20,6 @@
             tools:text="Chappie" />
 
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -32,7 +31,7 @@
 
                 <ImageView
                     android:id="@+id/details_movie_poster"
-                    android:layout_width="175dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:scaleType="fitXY" />
@@ -53,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:textSize="42sp"
                 android:layout_toRightOf="@id/layout_movie_details_poster"
                 tools:text="2015" />
 
@@ -62,17 +62,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/details_movie_year"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
                 android:layout_toRightOf="@id/layout_movie_details_poster"
-                tools:text="running time" />
+                tools:text="120min" />
 
             <TextView
+                android:layout_marginTop="8dp"
                 android:id="@+id/details_movie_user_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/details_movie_running_time"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/layout_movie_details_poster"
-                tools:text="8.1/10" />
+                tools:text="8.1 / 10" />
         </RelativeLayout>
 
         <TextView

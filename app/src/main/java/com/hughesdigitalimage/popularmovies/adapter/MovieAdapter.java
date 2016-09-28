@@ -1,5 +1,6 @@
 package com.hughesdigitalimage.popularmovies.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +27,14 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private static final int VIEW_TYPE_MOVIE_LISTING = 1;
     private static final int VIEW_TYPE_MOVIE_EMPTY_STATE = 2;
+
     private List<PopularMovieDetailsTO> moveResults;
-    private WeakReference<PopularMoviesFragment> weakPopularMoviesFragment;
+    private WeakReference<Context> contextWeakReference;
     private WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks;
 
-    public MovieAdapter(List<PopularMovieDetailsTO> moveResults, WeakReference<PopularMoviesFragment> weakPopularMoviesFragment, WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks) {
+    public MovieAdapter(List<PopularMovieDetailsTO> moveResults, WeakReference<Context> contextWeakReference, WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks) {
         this.moveResults = moveResults;
-        this.weakPopularMoviesFragment = weakPopularMoviesFragment;
+        this.contextWeakReference = contextWeakReference;
         this.weakMovieDetailsCallbacks = weakMovieDetailsCallbacks;
     }
 
@@ -61,8 +63,8 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         String retrievePosterURL = PopularMoviesFragment.MOVIE_DB_POSTER_IMAGE_URL + moviePosterPath;
 
         if (StringUtils.isNotEmpty(moviePosterPath)) {
-            PopularMoviesFragment fragment = weakPopularMoviesFragment.get();
-            FetchMoviePoster.execute(fragment,retrievePosterURL,moviePoster,progressSpinner);
+
+            FetchMoviePoster.execute(contextWeakReference,retrievePosterURL,moviePoster,progressSpinner);
         }
 
     }
