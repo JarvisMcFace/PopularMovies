@@ -36,7 +36,10 @@ public class FetchMoviePoster {
                     @Override
                     public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
                         super.onResourceReady(drawable, anim);
-                        progressBar.setVisibility(View.GONE);
+                        if (progressBar != null){
+                            progressBar.setVisibility(View.GONE);
+                        }
+
                     }
                 });
 

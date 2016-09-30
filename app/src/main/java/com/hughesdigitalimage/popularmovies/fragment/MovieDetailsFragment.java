@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private View rootView;
     private PopularMovieDetailsTO popularMovieDetailsTO;
     private ImageView detailPoster;
-    private TextView title;
+    private ImageView toolbarPoster;
     private TextView year;
     private TextView runningTime;
     private TextView voteAverage;
@@ -50,6 +51,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     private ProgressBar progressSpinner;
     private MoviesTO moviesTO;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
             popularMovieDetailsTO = (PopularMovieDetailsTO) bundle.getSerializable(EXTRA_MOVIE_DETAILS_TO);
         }
 
-        title = (TextView) rootView.findViewById(R.id.movie_title);
+
         detailPoster = (ImageView) rootView.findViewById(R.id.details_movie_poster);
         progressSpinner = (ProgressBar) rootView.findViewById(R.id.details_progress_spinner);
 
@@ -77,6 +79,11 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
         voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
         overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
+
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
+        toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
+
 
         fetchMovieDetails();
     }
@@ -92,13 +99,17 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private void loadData() {
 
         String retrievePosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getPosterPath();
+        String retrieveCollapsingToolbarPosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getBackdropPath();
         WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
 
         FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinner);
+        FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
 
         if (moviesTO != null) {
             String releaseDate = getReleaseDate();
-            title.setText(popularMovieDetailsTO.getTitle());
+
+            collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
+            toolbarPoster.setImageAlpha(95);
             year.setText(releaseDate);
             overview.setText(popularMovieDetailsTO.getOverview());
 
