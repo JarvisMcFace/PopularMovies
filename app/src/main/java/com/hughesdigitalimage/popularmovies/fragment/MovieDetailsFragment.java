@@ -117,6 +117,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
             return;
         }
 
+        progressSpinner.setVisibility(View.VISIBLE);
         String movieID = String.valueOf(popularMovieDetailsTO.getId());
         String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
         WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
