@@ -16,10 +16,10 @@
       "original_language": "en",
       "title": "Captain America: Civil War",
       "backdrop_path": "\/rqAHkvXldb9tHlnbQDwOzRi0yVD.jpg",
-      "popularity": 55.090678,
-      "vote_count": 2970,
+      "popularity": 47.697668,
+      "vote_count": 3020,
       "video": false,
-      "vote_average": 6.84
+      "vote_average": 6.81
     },
     {
       "poster_path": "\/zSouWWrySXshPCT4t3UKCQGayyo.jpg",
@@ -37,10 +37,67 @@
       "original_language": "en",
       "title": "X-Men: Apocalypse",
       "backdrop_path": "\/oQWWth5AOtbWG9o8SCAviGcADed.jpg",
-      "popularity": 22.492057,
-      "vote_count": 1857,
+      "popularity": 26.881744,
+      "vote_count": 1892,
       "video": false,
       "vote_average": 6.09
+    },
+    {
+      "poster_path": "\/z6BP8yLwck8mN9dtdYKkZ4XGa3D.jpg",
+      "adult": false,
+      "overview": "A big screen remake of John Sturges' classic western The Magnificent Seven, itself a remake of Akira Kurosawa's Seven Samurai. Seven gun men in the old west gradually come together to help a poor village against savage thieves.",
+      "release_date": "2016-09-14",
+      "genre_ids": [
+        28,
+        12,
+        37
+      ],
+      "id": 333484,
+      "original_title": "The Magnificent Seven",
+      "original_language": "en",
+      "title": "The Magnificent Seven",
+      "backdrop_path": "\/g54J9MnNLe7WJYVIvdWTeTIygAH.jpg",
+      "popularity": 24.648826,
+      "vote_count": 166,
+      "video": false,
+      "vote_average": 4.64
+    },
+    {
+      "poster_path": "\/6FxOPJ9Ysilpq0IgkrMJ7PubFhq.jpg",
+      "adult": false,
+      "overview": "Tarzan, having acclimated to life in London, is called back to his former home in the jungle to investigate the activities at a mining encampment.",
+      "release_date": "2016-06-29",
+      "genre_ids": [
+        28,
+        12
+      ],
+      "id": 258489,
+      "original_title": "The Legend of Tarzan",
+      "original_language": "en",
+      "title": "The Legend of Tarzan",
+      "backdrop_path": "\/75GFqrnHMKqkcNZ2wWefWXfqtMV.jpg",
+      "popularity": 22.231865,
+      "vote_count": 1130,
+      "video": false,
+      "vote_average": 4.95
+    },
+    {
+      "poster_path": "\/h28t2JNNGrZx0fIuAw8aHQFhIxR.jpg",
+      "adult": false,
+      "overview": "A recently cheated on married woman falls for a younger man who has moved in next door, but their torrid affair soon takes a dangerous turn.",
+      "release_date": "2015-01-23",
+      "genre_ids": [
+        53
+      ],
+      "id": 241251,
+      "original_title": "The Boy Next Door",
+      "original_language": "en",
+      "title": "The Boy Next Door",
+      "backdrop_path": "\/vj4IhmH4HCMZYYjTMiYBybTWR5o.jpg",
+      "popularity": 21.971098,
+      "vote_count": 767,
+      "video": false,
+      "vote_average": 3.91
     },
     {
       "poster_path": "\/tgfRDJs5PFW20Aoh1orEzuxW8cN.jpg",
@@ -56,29 +113,31 @@
       "original_title": "Mechanic: Resurrection",
       "original_language": "en",
       "title": "Mechanic: Resurrection",
-      "backdrop_path": "\/3oRHlbxMLBXHfMqUsx1emwqiuQ3.jpg",
-      "popularity": 21.085802,
-      "vote_count": 326,
+      "backdrop_path": "\/6kMu4vECAyTpj2Z7n8viJ4RAaYh.jpg",
+      "popularity": 20.916017,
+      "vote_count": 346,
       "video": false,
-      "vote_average": 4.28
+      "vote_average": 4.23
     },
     {
-      "poster_path": "\/h28t2JNNGrZx0fIuAw8aHQFhIxR.jpg",
+      "poster_path": "\/sm7p6NvWOBSDywdIPhmiX3SLSH8.jpg",
       "adult": false,
-      "overview": "A recently cheated on married woman falls for a younger man who has moved in next door, but their torrid affair soon takes a dangerous turn.",
-      "release_date": "2015-01-23",
+      "overview": "Two years after choosing not to kill the man who killed his son, former police sergeant Leo Barnes has become head of security for Senator Charlene Roan, the front runner in the next Presidential election due to her vow to eliminate the Purge. On the night of what should be the final Purge, a betrayal from within the government forces Barnes and Roan out onto the street where they must fight to survive the night.",
+      "release_date": "2016-06-29",
       "genre_ids": [
+        28,
+        27,
         53
       ],
-      "id": 241251,
-      "original_title": "The Boy Next Door",
+      "id": 316727,
+      "original_title": "The Purge: Election Year",
       "original_language": "en",
-      "title": "The Boy Next Door",
-      "backdrop_path": "\/vj4IhmH4HCMZYYjTMiYBybTWR5o.jpg",
-      "popularity": 18.424367,
-      "vote_count": 749,
+      "title": "The Purge: Election Year",
+      "backdrop_path": "\/lPhsKTtycmbp6bzJAG662Pd5U3N.jpg",
+      "popularity": 19.27864,
+      "vote_count": 390,
       "video": false,
-      "vote_average": 3.95
+      "vote_average": 5.74
     },
     {
       "poster_path": "\/ckrTPz6FZ35L5ybjqvkLWzzSLO7.jpg",
@@ -95,30 +154,10 @@
       "original_language": "en",
       "title": "Warcraft",
       "backdrop_path": "\/5SX2rgKXZ7NVmAJR5z5LprqSXKa.jpg",
-      "popularity": 15.962423,
-      "vote_count": 819,
+      "popularity": 17.609252,
+      "vote_count": 843,
       "video": false,
-      "vote_average": 6.09
-    },
-    {
-      "poster_path": "\/z6BP8yLwck8mN9dtdYKkZ4XGa3D.jpg",
-      "adult": false,
-      "overview": "A big screen remake of John Sturges' classic western The Magnificent Seven, itself a remake of Akira Kurosawa's Seven Samurai. Seven gun men in the old west gradually come together to help a poor village against savage thieves.",
-      "release_date": "2016-09-22",
-      "genre_ids": [
-        28,
-        12,
-        37
-      ],
-      "id": 333484,
-      "original_title": "The Magnificent Seven",
-      "original_language": "en",
-      "title": "The Magnificent Seven",
-      "backdrop_path": "\/g54J9MnNLe7WJYVIvdWTeTIygAH.jpg",
-      "popularity": 14.110563,
-      "vote_count": 89,
-      "video": false,
-      "vote_average": 4.16
+      "vote_average": 6.08
     },
     {
       "poster_path": "\/kqjL17yufvn9OVLyXYpvtyrFfak.jpg",
@@ -136,10 +175,146 @@
       "original_language": "en",
       "title": "Mad Max: Fury Road",
       "backdrop_path": "\/tbhdm8UJAb4ViCTsulYFL3lxMCd.jpg",
-      "popularity": 14.005876,
-      "vote_count": 5373,
+      "popularity": 16.963713,
+      "vote_count": 5405,
       "video": false,
       "vote_average": 7.24
+    },
+    {
+      "poster_path": "\/5TQ6YDmymBpnF005OyoB7ohZps9.jpg",
+      "adult": false,
+      "overview": "After the cataclysmic events in New York with The Avengers, Steve Rogers, aka Captain America is living quietly in Washington, D.C. and trying to adjust to the modern world. But when a S.H.I.E.L.D. colleague comes under attack, Steve becomes embroiled in a web of intrigue that threatens to put the world at risk. Joining forces with the Black Widow, Captain America struggles to expose the ever-widening conspiracy while fighting off professional assassins sent to silence him at every turn. When the full scope of the villainous plot is revealed, Captain America and the Black Widow enlist the help of a new ally, the Falcon. However, they soon find themselves up against an unexpected and formidable enemy—the Winter Soldier.",
+      "release_date": "2014-03-20",
+      "genre_ids": [
+        28,
+        12,
+        878
+      ],
+      "id": 100402,
+      "original_title": "Captain America: The Winter Soldier",
+      "original_language": "en",
+      "title": "Captain America: The Winter Soldier",
+      "backdrop_path": "\/4qfXT9BtxeFuamR4F49m2mpKQI1.jpg",
+      "popularity": 15.465346,
+      "vote_count": 3569,
+      "video": false,
+      "vote_average": 7.58
+    },
+    {
+      "poster_path": "\/tXQa4fpOj8ab79ByTd4sGAqz36o.jpg",
+      "adult": false,
+      "overview": "The action of a controversial novel \"Lolita\", of the famous Russian writer Vladimir Nabokov, reset to present day Russia. A mother and her daughter are running short of money and are thankful that they could rent a room to a writer. The mother is lonely and the daughter is coming of age. The mother immediately gets in love with him, which causing to the daughter a terrible jealousy. And then the daughter chooses the most unfailing weapon - she tries to discourage him from her mother. She tries to get his attention by parading around without panties, asking his help with her shower, and rubbing up against him and flashing him whenever her mother is not looking. She is even trying to convince her mom, that since she is becoming a woman, that he should teach her some of the finer points of love. Could the grown man resist the charms of a 14 year-old nymphet?",
+      "release_date": "2007-01-03",
+      "genre_ids": [
+        10749
+      ],
+      "id": 329103,
+      "original_title": "Russkaya Lolita",
+      "original_language": "ru",
+      "title": "Russian Lolita",
+      "backdrop_path": "\/fiNnRoaM6iLryXAReMp8MYUdppT.jpg",
+      "popularity": 15.394389,
+      "vote_count": 10,
+      "video": false,
+      "vote_average": 1.85
+    },
+    {
+      "poster_path": "\/lw0IqOSMsQcy1QnVIEIDppLmNwk.jpg",
+      "adult": false,
+      "overview": "A group of teens break into a blind man's home thinking they'll get away with the perfect crime. They're wrong.",
+      "release_date": "2016-08-25",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "id": 300669,
+      "original_title": "Don't Breathe",
+      "original_language": "en",
+      "title": "Don't Breathe",
+      "backdrop_path": "\/bCThHXQ3aLLDU3KFST0rC8mTan5.jpg",
+      "popularity": 15.182595,
+      "vote_count": 216,
+      "video": false,
+      "vote_average": 5.87
+    },
+    {
+      "poster_path": "\/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg",
+      "adult": false,
+      "overview": "From DC Comics comes the Suicide Squad, an antihero team of incarcerated supervillains who act as deniable assets for the United States government, undertaking high-risk black ops missions in exchange for commuted prison sentences.",
+      "release_date": "2016-08-03",
+      "genre_ids": [
+        28,
+        80,
+        14
+      ],
+      "id": 297761,
+      "original_title": "Suicide Squad",
+      "original_language": "en",
+      "title": "Suicide Squad",
+      "backdrop_path": "\/ndlQ2Cuc3cjTL7lTynw6I4boP4S.jpg",
+      "popularity": 15.033938,
+      "vote_count": 1941,
+      "video": false,
+      "vote_average": 5.91
+    },
+    {
+      "poster_path": "\/cGOPbv9wA5gEejkUN892JrveARt.jpg",
+      "adult": false,
+      "overview": "Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before.",
+      "release_date": "2016-03-23",
+      "genre_ids": [
+        28,
+        12,
+        14
+      ],
+      "id": 209112,
+      "original_title": "Batman v Superman: Dawn of Justice",
+      "original_language": "en",
+      "title": "Batman v Superman: Dawn of Justice",
+      "backdrop_path": "\/vsjBeMPZtyB7yNsYY56XYxifaQZ.jpg",
+      "popularity": 14.08629,
+      "vote_count": 3686,
+      "video": false,
+      "vote_average": 5.51
+    },
+    {
+      "poster_path": "\/9M5ibpQUjoVFjjnP2AdLcof4hAk.jpg",
+      "adult": false,
+      "overview": "After he reunites with an old pal through Facebook, a mild-mannered accountant is lured into the world of international espionage.",
+      "release_date": "2016-06-15",
+      "genre_ids": [
+        28,
+        35
+      ],
+      "id": 302699,
+      "original_title": "Central Intelligence",
+      "original_language": "en",
+      "title": "Central Intelligence",
+      "backdrop_path": "\/nX64YARJo4OugPTSVuvFwZzcqM4.jpg",
+      "popularity": 14.003114,
+      "vote_count": 561,
+      "video": false,
+      "vote_average": 6
+    },
+    {
+      "poster_path": "\/gj282Pniaa78ZJfbaixyLXnXEDI.jpg",
+      "adult": false,
+      "overview": "Katniss Everdeen reluctantly becomes the symbol of a mass rebellion against the autocratic Capitol.",
+      "release_date": "2014-11-18",
+      "genre_ids": [
+        878,
+        12,
+        53
+      ],
+      "id": 131631,
+      "original_title": "The Hunger Games: Mockingjay - Part 1",
+      "original_language": "en",
+      "title": "The Hunger Games: Mockingjay - Part 1",
+      "backdrop_path": "\/83nHcz2KcnEpPXY50Ky2VldewJJ.jpg",
+      "popularity": 12.927658,
+      "vote_count": 3248,
+      "video": false,
+      "vote_average": 6.69
     },
     {
       "poster_path": "\/5BCpxPLyp4wGcTribpZ6WtNkVJ5.jpg",
@@ -157,211 +332,30 @@
       "original_language": "en",
       "title": "Teenage Mutant Ninja Turtles: Out of the Shadows",
       "backdrop_path": "\/999RuhZvog8ocyvcccVV9yGmMjL.jpg",
-      "popularity": 13.804576,
-      "vote_count": 342,
-      "video": false,
-      "vote_average": 5.53
-    },
-    {
-      "poster_path": "\/lw0IqOSMsQcy1QnVIEIDppLmNwk.jpg",
-      "adult": false,
-      "overview": "A group of teens break into a blind man's home thinking they'll get away with the perfect crime. They're wrong.",
-      "release_date": "2016-08-25",
-      "genre_ids": [
-        27,
-        53
-      ],
-      "id": 300669,
-      "original_title": "Don't Breathe",
-      "original_language": "en",
-      "title": "Don't Breathe",
-      "backdrop_path": "\/bCThHXQ3aLLDU3KFST0rC8mTan5.jpg",
-      "popularity": 13.345577,
-      "vote_count": 204,
-      "video": false,
-      "vote_average": 5.95
-    },
-    {
-      "poster_path": "\/gj282Pniaa78ZJfbaixyLXnXEDI.jpg",
-      "adult": false,
-      "overview": "Katniss Everdeen reluctantly becomes the symbol of a mass rebellion against the autocratic Capitol.",
-      "release_date": "2014-11-18",
-      "genre_ids": [
-        878,
-        12,
-        53
-      ],
-      "id": 131631,
-      "original_title": "The Hunger Games: Mockingjay - Part 1",
-      "original_language": "en",
-      "title": "The Hunger Games: Mockingjay - Part 1",
-      "backdrop_path": "\/83nHcz2KcnEpPXY50Ky2VldewJJ.jpg",
-      "popularity": 12.914529,
-      "vote_count": 3241,
-      "video": false,
-      "vote_average": 6.69
-    },
-    {
-      "poster_path": "\/sm7p6NvWOBSDywdIPhmiX3SLSH8.jpg",
-      "adult": false,
-      "overview": "Two years after choosing not to kill the man who killed his son, former police sergeant Leo Barnes has become head of security for Senator Charlene Roan, the front runner in the next Presidential election due to her vow to eliminate the Purge. On the night of what should be the final Purge, a betrayal from within the government forces Barnes and Roan out onto the street where they must fight to survive the night.",
-      "release_date": "2016-06-29",
-      "genre_ids": [
-        28,
-        27,
-        53
-      ],
-      "id": 316727,
-      "original_title": "The Purge: Election Year",
-      "original_language": "en",
-      "title": "The Purge: Election Year",
-      "backdrop_path": "\/lPhsKTtycmbp6bzJAG662Pd5U3N.jpg",
-      "popularity": 12.615171,
-      "vote_count": 366,
-      "video": false,
-      "vote_average": 5.72
-    },
-    {
-      "poster_path": "\/jjBgi2r5cRt36xF6iNUEhzscEcb.jpg",
-      "adult": false,
-      "overview": "Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.",
-      "release_date": "2015-06-09",
-      "genre_ids": [
-        28,
-        12,
-        878,
-        53
-      ],
-      "id": 135397,
-      "original_title": "Jurassic World",
-      "original_language": "en",
-      "title": "Jurassic World",
-      "backdrop_path": "\/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
-      "popularity": 12.499616,
-      "vote_count": 5032,
-      "video": false,
-      "vote_average": 6.59
-    },
-    {
-      "poster_path": "\/oDL2ryJ0sV2bmjgshVgJb3qzvwp.jpg",
-      "adult": false,
-      "overview": "The city needs heroes. Darkness has settled over New York City as Shredder and his evil Foot Clan have an iron grip on everything from the police to the politicians. The future is grim until four unlikely outcast brothers rise from the sewers and discover their destiny as Teenage Mutant Ninja Turtles. The Turtles must work with fearless reporter April and her wise-cracking cameraman Vern Fenwick to save the city and unravel Shredder's diabolical plan.",
-      "release_date": "2014-08-07",
-      "genre_ids": [
-        878,
-        28,
-        12,
-        14,
-        35
-      ],
-      "id": 98566,
-      "original_title": "Teenage Mutant Ninja Turtles",
-      "original_language": "en",
-      "title": "Teenage Mutant Ninja Turtles",
-      "backdrop_path": "\/OqCXGt5nl1cHPeotxCDvXLLe6p.jpg",
-      "popularity": 12.48283,
-      "vote_count": 1679,
-      "video": false,
-      "vote_average": 5.89
-    },
-    {
-      "poster_path": "\/43Gr00IiZtq2dOtYZQVOTwMf3kI.jpg",
-      "adult": false,
-      "overview": "On January 15, 2009, the world witnessed the \"Miracle on the Hudson\" when Captain \"Sully\" Sullenberger glided his disabled plane onto the frigid waters of the Hudson River, saving the lives of all 155 aboard. However, even as Sully was being heralded by the public and the media for his unprecedented feat of aviation skill, an investigation was unfolding that threatened to destroy his reputation and his career.",
-      "release_date": "2016-09-08",
-      "genre_ids": [
-        18,
-        36
-      ],
-      "id": 363676,
-      "original_title": "Sully",
-      "original_language": "en",
-      "title": "Sully",
-      "backdrop_path": "\/vC9H1ZVdXi1KjH4aPfGB54mvDNh.jpg",
-      "popularity": 12.348066,
-      "vote_count": 84,
+      "popularity": 12.446644,
+      "vote_count": 352,
       "video": false,
       "vote_average": 5.54
     },
     {
-      "poster_path": "\/cGOPbv9wA5gEejkUN892JrveARt.jpg",
+      "poster_path": "\/peJ7WrEW4OV6SvObhSFZRPzqOjj.jpg",
       "adult": false,
-      "overview": "Fearing the actions of a god-like Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on Metropolis’s most revered, modern-day savior, while the world wrestles with what sort of hero it really needs. And with Batman and Superman at war with one another, a new threat quickly arises, putting mankind in greater danger than it’s ever known before.",
-      "release_date": "2016-03-23",
+      "overview": "We always knew they were coming back. Using recovered alien technology, the nations of Earth have collaborated on an immense defense program to protect the planet. But nothing can prepare us for the aliens’ advanced and unprecedented force. Only the ingenuity of a few brave men and women can bring our world back from the brink of extinction.",
+      "release_date": "2016-06-22",
       "genre_ids": [
         28,
         12,
-        14
-      ],
-      "id": 209112,
-      "original_title": "Batman v Superman: Dawn of Justice",
-      "original_language": "en",
-      "title": "Batman v Superman: Dawn of Justice",
-      "backdrop_path": "\/vsjBeMPZtyB7yNsYY56XYxifaQZ.jpg",
-      "popularity": 12.223255,
-      "vote_count": 3672,
-      "video": false,
-      "vote_average": 5.51
-    },
-    {
-      "poster_path": "\/6FxOPJ9Ysilpq0IgkrMJ7PubFhq.jpg",
-      "adult": false,
-      "overview": "Tarzan, having acclimated to life in London, is called back to his former home in the jungle to investigate the activities at a mining encampment.",
-      "release_date": "2016-06-29",
-      "genre_ids": [
-        28,
-        12
-      ],
-      "id": 258489,
-      "original_title": "The Legend of Tarzan",
-      "original_language": "en",
-      "title": "The Legend of Tarzan",
-      "backdrop_path": "\/75GFqrnHMKqkcNZ2wWefWXfqtMV.jpg",
-      "popularity": 12.036277,
-      "vote_count": 1102,
-      "video": false,
-      "vote_average": 4.95
-    },
-    {
-      "poster_path": "\/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg",
-      "adult": false,
-      "overview": "Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
-      "release_date": "2014-11-05",
-      "genre_ids": [
-        12,
-        18,
         878
       ],
-      "id": 157336,
-      "original_title": "Interstellar",
+      "id": 47933,
+      "original_title": "Independence Day: Resurgence",
       "original_language": "en",
-      "title": "Interstellar",
-      "backdrop_path": "\/xu9zaAevzQ5nnrsXN6JcahLnG4i.jpg",
-      "popularity": 11.863465,
-      "vote_count": 5733,
+      "title": "Independence Day: Resurgence",
+      "backdrop_path": "\/jlabReqTKDttdAUOGLq7VMNyv1u.jpg",
+      "popularity": 12.276807,
+      "vote_count": 1001,
       "video": false,
-      "vote_average": 8.11
-    },
-    {
-      "poster_path": "\/inVq3FRqcYIRl2la8iZikYYxFNR.jpg",
-      "adult": false,
-      "overview": "Based upon Marvel Comics’ most unconventional anti-hero, DEADPOOL tells the origin story of former Special Forces operative turned mercenary Wade Wilson, who after being subjected to a rogue experiment that leaves him with accelerated healing powers, adopts the alter ego Deadpool. Armed with his new abilities and a dark, twisted sense of humor, Deadpool hunts down the man who nearly destroyed his life.",
-      "release_date": "2016-02-09",
-      "genre_ids": [
-        28,
-        12,
-        35,
-        10749
-      ],
-      "id": 293660,
-      "original_title": "Deadpool",
-      "original_language": "en",
-      "title": "Deadpool",
-      "backdrop_path": "\/nbIrDhOtUpdD9HKDBRy02a8VhpV.jpg",
-      "popularity": 11.828241,
-      "vote_count": 5042,
-      "video": false,
-      "vote_average": 7.17
+      "vote_average": 4.7
     },
     {
       "poster_path": "\/hU0E130tsGdsYa4K9lc3Xrn5Wyt.jpg",
@@ -381,32 +375,32 @@
       "original_language": "en",
       "title": "Now You See Me 2",
       "backdrop_path": "\/zrAO2OOa6s6dQMQ7zsUbDyIBrAP.jpg",
-      "popularity": 11.497533,
-      "vote_count": 959,
+      "popularity": 11.975714,
+      "vote_count": 980,
       "video": false,
       "vote_average": 6.6
     },
     {
-      "poster_path": "\/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg",
+      "poster_path": "\/dlIPGXPxXQTp9kFrRzn0RsfUelx.jpg",
       "adult": false,
-      "overview": "From DC Comics comes the Suicide Squad, an antihero team of incarcerated supervillains who act as deniable assets for the United States government, undertaking high-risk black ops missions in exchange for commuted prison sentences.",
-      "release_date": "2016-08-03",
+      "overview": "Predominantly set during World War II, Steve Rogers is a sickly man from Brooklyn who's transformed into super-soldier Captain America to aid in the war effort. Rogers must stop the Red Skull – Adolf Hitler's ruthless head of weaponry, and the leader of an organization that intends to use a mysterious device of untold powers for world domination.",
+      "release_date": "2011-07-22",
       "genre_ids": [
         28,
-        80,
-        14
+        12,
+        878
       ],
-      "id": 297761,
-      "original_title": "Suicide Squad",
+      "id": 1771,
+      "original_title": "Captain America: The First Avenger",
       "original_language": "en",
-      "title": "Suicide Squad",
-      "backdrop_path": "\/ndlQ2Cuc3cjTL7lTynw6I4boP4S.jpg",
-      "popularity": 11.404676,
-      "vote_count": 1907,
+      "title": "Captain America: The First Avenger",
+      "backdrop_path": "\/pmZtj1FKvQqISS6iQbkiLg5TAsr.jpg",
+      "popularity": 11.825641,
+      "vote_count": 4787,
       "video": false,
-      "vote_average": 5.9
+      "vote_average": 6.45
     }
   ],
-  "total_results": 19599,
+  "total_results": 19591,
   "total_pages": 980
 }

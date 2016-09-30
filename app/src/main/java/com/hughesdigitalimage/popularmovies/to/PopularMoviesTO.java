@@ -10,12 +10,12 @@ import java.util.List;
  * Created by David on 9/21/16.
  */
 
-public class MoviesTO implements Serializable{
+public class PopularMoviesTO implements Serializable{
 
     private static final long serialVersionUID = -3748871556194934840L;
 
     private Integer page;
-    private List<MovieDetailsTO> results = new ArrayList<MovieDetailsTO>();
+    private List<PopularMovieDetailsTO> results = new ArrayList<PopularMovieDetailsTO>();
     @SerializedName("total_results")
     private Integer totalResults;
     @SerializedName("total_pages")
@@ -29,11 +29,11 @@ public class MoviesTO implements Serializable{
         this.page = page;
     }
 
-    public List<MovieDetailsTO> getResults() {
+    public List<PopularMovieDetailsTO> getResults() {
         return results;
     }
 
-    public void setResults(List<MovieDetailsTO> results) {
+    public void setResults(List<PopularMovieDetailsTO> results) {
         this.results = results;
     }
 

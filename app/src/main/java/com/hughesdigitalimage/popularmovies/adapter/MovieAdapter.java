@@ -1,5 +1,6 @@
 package com.hughesdigitalimage.popularmovies.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,16 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.adapter.viewholder.MovieViewHolder;
 import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsCallbacks;
 import com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment;
-import com.hughesdigitalimage.popularmovies.to.MovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
+import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;
 import com.hughesdigitalimage.popularmovies.util.StringUtils;
 
 import java.lang.ref.WeakReference;
@@ -30,15 +27,15 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private static final int VIEW_TYPE_MOVIE_LISTING = 1;
     private static final int VIEW_TYPE_MOVIE_EMPTY_STATE = 2;
-    private List<MovieDetailsTO> moveResults;
-    private WeakReference<PopularMoviesFragment> weakPopularMoviesFragment;
+
+    private List<PopularMovieDetailsTO> moveResults;
+    private WeakReference<Context> contextWeakReference;
     private WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks;
 
-    public MovieAdapter(List<MovieDetailsTO> moveResults, WeakReference<PopularMoviesFragment> weakPopularMoviesFragment,WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks) {
+    public MovieAdapter(List<PopularMovieDetailsTO> moveResults, WeakReference<Context> contextWeakReference, WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks) {
         this.moveResults = moveResults;
-        this.weakPopularMoviesFragment = weakPopularMoviesFragment;
+        this.contextWeakReference = contextWeakReference;
         this.weakMovieDetailsCallbacks = weakMovieDetailsCallbacks;
-
     }
 
     @Override
@@ -58,26 +55,16 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final ImageView moviePoster = movieViewHolder.getMoviePoster();
         final ProgressBar progressSpinner = movieViewHolder.getProgressSpinner();
 
-        MovieDetailsTO movieDetailsTO = moveResults.get(position);
-        movieViewHolder.setMovieDetailsTO(movieDetailsTO);
 
-        String moviePosterPath = movieDetailsTO.getPosterPath();
-        String retrievePosterURL = PopularMoviesFragment.MOVIE_DB_IMAGE_URL + moviePosterPath;
+        PopularMovieDetailsTO popularMovieDetailsTO = moveResults.get(position);
+        movieViewHolder.setPopularMovieDetailsTO(popularMovieDetailsTO);
+
+        String moviePosterPath = popularMovieDetailsTO.getPosterPath();
+        String retrievePosterURL = PopularMoviesFragment.MOVIE_DB_POSTER_IMAGE_URL + moviePosterPath;
 
         if (StringUtils.isNotEmpty(moviePosterPath)) {
-            PopularMoviesFragment fragment = weakPopularMoviesFragment.get();
-            Glide.with(fragment)
-                    .load(retrievePosterURL)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .fitCenter()
-                    .into(new GlideDrawableImageViewTarget(moviePoster) {
-                        @Override
-                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                            super.onResourceReady(drawable, anim);
-                            progressSpinner.setVisibility(View.GONE);
-                        }
-                    });
+
+            FetchMoviePoster.execute(contextWeakReference,retrievePosterURL,moviePoster,progressSpinner);
         }
 
     }
@@ -87,4 +74,6 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getItemCount() {
         return moveResults.size();
     }
+
+
 }

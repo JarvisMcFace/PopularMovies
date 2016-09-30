@@ -1,15 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-    <EditText
-        android:id="@+id/movie_title"
-        style="@style/Base.TextAppearance.AppCompat.Title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:textSize="44sp"
-        android:layout_height="wrap_content"
-        android:text="Chappie"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_marginTop="@dimen/material_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/layout_movie_details_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true">
+
+                <ImageView
+                    android:id="@+id/details_movie_poster"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/material_margin"
+                    android:scaleType="fitXY" />
+
+                <ProgressBar
+                    android:id="@+id/details_progress_spinner"
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical|center_horizontal|center" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/details_movie_year"
+                style="@style/Base.TextAppearance.AppCompat.Display1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/material_margin"
+                android:layout_toRightOf="@id/layout_movie_details_poster"
+                android:textSize="42sp"
+                tools:text="2015" />
+
+            <TextView
+                android:id="@+id/details_movie_running_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_movie_year"
+                android:layout_marginLeft="@dimen/material_margin"
+                android:layout_marginTop="@dimen/material_margin_divider"
+                android:layout_toRightOf="@id/layout_movie_details_poster"
+                android:textSize="18sp"
+                tools:text="120min" />
+
+            <TextView
+                android:id="@+id/details_movie_released_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_movie_running_time"
+                android:layout_marginLeft="@dimen/material_margin"
+                android:layout_marginTop="@dimen/material_margin_divider"
+                android:layout_toRightOf="@id/layout_movie_details_poster"
+                tools:text="released 08/08/2016" />
+
+            <TextView
+                android:id="@+id/details_movie_user_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_movie_released_date"
+                android:layout_marginLeft="@dimen/material_margin"
+                android:layout_marginTop="@dimen/material_margin_divider"
+                android:layout_toRightOf="@id/layout_movie_details_poster"
+                tools:text="8.1 / 10" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/details_movie_overview"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/material_margin"
+            tools:text="OverView" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

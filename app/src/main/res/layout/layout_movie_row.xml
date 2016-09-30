@@ -2,25 +2,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/black"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <ImageView
-        android:visibility="visible"
-        android:adjustViewBounds="true"
         android:id="@+id/movie_poster"
-        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/capamerica"/>
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progress_spinner"
-        android:layout_gravity="center_vertical|center_horizontal|center"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal|center" />
 
 </FrameLayout>
