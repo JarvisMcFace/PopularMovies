@@ -11,5 +11,6 @@
     <string name="sort_top_rated">Top rated</string>
     <string name="running_time">%1s minutes</string>
     <string name="user_rating">%1s / 10</string>
+    <string name="released_date">released %1s</string>
     <string name="no_network_connection">No Network Connection Please try again</string>
 </resources>

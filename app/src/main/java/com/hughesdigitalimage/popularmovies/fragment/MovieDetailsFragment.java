@@ -47,6 +47,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private TextView runningTime;
     private TextView voteAverage;
     private TextView overview;
+    private TextView releasedDate;
 
 
     private ProgressBar progressSpinner;
@@ -77,6 +78,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
         year = (TextView) rootView.findViewById(R.id.details_movie_year);
         runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
+        releasedDate = (TextView) rootView.findViewById(R.id.details_movie_released_date);
         voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
         overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
 
@@ -106,17 +108,21 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
 
         if (moviesTO != null) {
-            String releaseDate = getReleaseDate();
+            String releaseYear = getReleaseYearDate();
 
             collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
             toolbarPoster.setImageAlpha(95);
-            year.setText(releaseDate);
+            year.setText(releaseYear);
             overview.setText(popularMovieDetailsTO.getOverview());
 
             String runningMinutes = getString(R.string.running_time, String.valueOf(moviesTO.getRuntime()));
             runningTime.setText(runningMinutes);
+
             String voteAverageDisplayed = getString(R.string.user_rating, String.valueOf(moviesTO.getVoteAverage()));
             voteAverage.setText(voteAverageDisplayed);
+
+            String displayedReleasedDate = getString(R.string.released_date, popularMovieDetailsTO.getReleaseDate());
+            releasedDate.setText(displayedReleasedDate);
         }
 
     }
@@ -136,7 +142,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         okHttpHelper.execute(urlMovieDetails);
     }
 
-    private String getReleaseDate() {
+    private String getReleaseYearDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date convertedCurrentDate = null;
         try {
@@ -146,6 +152,5 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         }
         return sdf.format(convertedCurrentDate);
     }
-
 
 }
