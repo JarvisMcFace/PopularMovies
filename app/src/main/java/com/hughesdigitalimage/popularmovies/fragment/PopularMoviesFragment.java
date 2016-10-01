@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -115,7 +116,10 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void fetchPopularMovies() {
         if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
+            final Snackbar snackbar = Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_INDEFINITE);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.error));
+            snackbar.show();
             return;
         }
 
@@ -146,7 +150,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     private void loadData() {
-
 
 
         if (moviesTOList != null) {

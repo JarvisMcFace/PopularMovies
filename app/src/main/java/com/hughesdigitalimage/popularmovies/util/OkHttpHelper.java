@@ -31,7 +31,7 @@ public class OkHttpHelper extends AsyncTask<String, Void, String> {
 
         Request request = builder.build();
 
-        Response response = null;
+        Response response;
         try {
             response = client.newCall(request).execute();
             return response.body().string();

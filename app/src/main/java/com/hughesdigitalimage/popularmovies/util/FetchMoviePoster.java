@@ -16,7 +16,6 @@ import java.lang.ref.WeakReference;
 /**
  * Created by David on 9/24/16.
  */
-
 public class FetchMoviePoster {
 
     public static void execute(WeakReference<Context> contextWeakReference , String posterURL, ImageView imageView, final ProgressBar progressBar) {

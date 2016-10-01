@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ import java.util.Date;
 
 public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallback {
 
-    public final static String MOVIE_DB_DETAILS_IMAGE_URL = "http://image.tmdb.org/t/p/w154";
     public static final String EXTRA_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.fragment.movieFragment.movieDetails";
     private static String TAG = "MovieDetailsFragment";
 
@@ -48,8 +48,6 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private TextView voteAverage;
     private TextView overview;
     private TextView releasedDate;
-
-
     private ProgressBar progressSpinner;
     private MoviesTO moviesTO;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -100,8 +98,9 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     private void loadData() {
 
-        String retrievePosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getPosterPath();
-        String retrieveCollapsingToolbarPosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getBackdropPath();
+        String moviePosterURL = getString(R.string.movie_details_image_url);
+        String retrievePosterURL = moviePosterURL + popularMovieDetailsTO.getPosterPath();
+        String retrieveCollapsingToolbarPosterURL = moviePosterURL + popularMovieDetailsTO.getBackdropPath();
         WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
 
         FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinner);
@@ -129,8 +128,12 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     private void fetchMovieDetails() {
 
+
         if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
-            Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_INDEFINITE);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.error));
+            snackbar.show();
             return;
         }
 
