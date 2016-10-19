@@ -5,5 +5,6 @@
     <string name="popular_movies_url">http://api.themoviedb.org/3/movie/popular?api_key=</string>
     <string name="movie_basic_informaiton_url">http://api.themoviedb.org/3/movie/%1s?api_key=</string>
 
-
+    <string name="movie_videos_endpoint_url">http://api.themoviedb.org/3/movie/%1s/videos?api_key=</string>
+    <string name="movie_videos_review_url">http://api.themoviedb.org/3/movie/%1s/reviews?api_key=</string>
 </resources>
