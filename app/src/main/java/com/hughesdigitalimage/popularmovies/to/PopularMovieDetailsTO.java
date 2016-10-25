@@ -1,8 +1,10 @@
 package com.hughesdigitalimage.popularmovies.to;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,8 @@ import java.util.List;
  * Created by David on 9/21/16.
  */
 
-public class PopularMovieDetailsTO implements Serializable {
+public class PopularMovieDetailsTO implements Parcelable {
 
-    private static final long serialVersionUID = 3087732908469661933L;
 
     @SerializedName("poster_path")
     private String posterPath;
@@ -42,6 +43,8 @@ public class PopularMovieDetailsTO implements Serializable {
     private Boolean video;
     @SerializedName("vote_average")
     private Double voteAverage;
+
+
 
     public String getPosterPath() {
         return posterPath;
@@ -155,4 +158,97 @@ public class PopularMovieDetailsTO implements Serializable {
         this.voteAverage = voteAverage;
     }
 
+
+    protected PopularMovieDetailsTO(Parcel in) {
+        posterPath = in.readString();
+        byte adultVal = in.readByte();
+        adult = adultVal == 0x02 ? null : adultVal != 0x00;
+        overview = in.readString();
+        releaseDate = in.readString();
+        if (in.readByte() == 0x01) {
+            genreIds = new ArrayList<Integer>();
+            in.readList(genreIds, Integer.class.getClassLoader());
+        } else {
+            genreIds = null;
+        }
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        originalTitle = in.readString();
+        originalLanguage = in.readString();
+        title = in.readString();
+        backdropPath = in.readString();
+        popularity = in.readByte() == 0x00 ? null : in.readDouble();
+        voteCount = in.readByte() == 0x00 ? null : in.readInt();
+        byte videoVal = in.readByte();
+        video = videoVal == 0x02 ? null : videoVal != 0x00;
+        voteAverage = in.readByte() == 0x00 ? null : in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(posterPath);
+        if (adult == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (adult ? 0x01 : 0x00));
+        }
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        if (genreIds == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(genreIds);
+        }
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(originalTitle);
+        dest.writeString(originalLanguage);
+        dest.writeString(title);
+        dest.writeString(backdropPath);
+        if (popularity == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(popularity);
+        }
+        if (voteCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(voteCount);
+        }
+        if (video == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (video ? 0x01 : 0x00));
+        }
+        if (voteAverage == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(voteAverage);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<PopularMovieDetailsTO> CREATOR = new Parcelable.Creator<PopularMovieDetailsTO>() {
+        @Override
+        public PopularMovieDetailsTO createFromParcel(Parcel in) {
+            return new PopularMovieDetailsTO(in);
+        }
+
+        @Override
+        public PopularMovieDetailsTO[] newArray(int size) {
+            return new PopularMovieDetailsTO[size];
+        }
+    };
 }

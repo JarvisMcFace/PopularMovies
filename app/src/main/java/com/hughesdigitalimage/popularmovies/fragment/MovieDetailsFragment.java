@@ -69,7 +69,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         Bundle bundle = intent.getExtras();
 
         if (bundle != null) {
-            popularMovieDetailsTO = (PopularMovieDetailsTO) bundle.getSerializable(EXTRA_MOVIE_DETAILS_TO);
+            popularMovieDetailsTO = bundle.getParcelable(EXTRA_MOVIE_DETAILS_TO);
         }
 
 
