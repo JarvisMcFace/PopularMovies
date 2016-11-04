@@ -6,6 +6,7 @@
 
 
     <dimen name="material_margin">16dp</dimen>
+    <dimen name="material_space_margin">8dp</dimen>
     <dimen name="toolbar_margin_top">24dp</dimen>
     <dimen name="toolbar_margin_bottom">24dp</dimen>
     <dimen name="material_margin_divider">8dp</dimen>

@@ -45,7 +45,6 @@ public class PopularMovieDetailsTO implements Parcelable {
     private Double voteAverage;
 
 
-
     public String getPosterPath() {
         return posterPath;
     }

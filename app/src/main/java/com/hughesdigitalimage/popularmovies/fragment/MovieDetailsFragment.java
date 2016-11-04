@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
+import com.hughesdigitalimage.popularmovies.to.video.MovieVideoTO;
 import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelperCallback;
+import com.hughesdigitalimage.popularmovies.util.VolleySingleton;
+
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
@@ -50,9 +59,12 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private TextView releasedDate;
 
 
-    private ProgressBar progressSpinner;
+    private ProgressBar progressSpinnerMovieDetails;
     private MoviesTO moviesTO;
+    private MovieVideoTO movieVideoTO;
+
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private String movieID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,9 +84,10 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
             popularMovieDetailsTO = bundle.getParcelable(EXTRA_MOVIE_DETAILS_TO);
         }
 
+        movieID = String.valueOf(popularMovieDetailsTO.getId());
 
         detailPoster = (ImageView) rootView.findViewById(R.id.details_movie_poster);
-        progressSpinner = (ProgressBar) rootView.findViewById(R.id.details_progress_spinner);
+        progressSpinnerMovieDetails = (ProgressBar) rootView.findViewById(R.id.details_progress_spinner);
 
         year = (TextView) rootView.findViewById(R.id.details_movie_year);
         runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
@@ -86,8 +99,8 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
         toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
 
-
         fetchMovieDetails();
+        fetchMovieVideos();
     }
 
 
@@ -104,7 +117,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         String retrieveCollapsingToolbarPosterURL = MOVIE_DB_DETAILS_IMAGE_URL + popularMovieDetailsTO.getBackdropPath();
         WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
 
-        FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinner);
+        FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinnerMovieDetails);
         FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
 
         if (moviesTO != null) {
@@ -134,13 +147,13 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
             return;
         }
 
-        progressSpinner.setVisibility(View.VISIBLE);
-        String movieID = String.valueOf(popularMovieDetailsTO.getId());
+        progressSpinnerMovieDetails.setVisibility(View.VISIBLE);
         String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
         WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
         OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
         okHttpHelper.execute(urlMovieDetails);
     }
+
 
     private String getReleaseYearDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -151,6 +164,40 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
             e.printStackTrace();
         }
         return sdf.format(convertedCurrentDate);
+    }
+
+
+    public void fetchMovieVideos(){
+
+
+        String movieVideosURL = getString(R.string.movie_videos_endpoint_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
+
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(movieVideosURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+
+                        performOnResponseMovieVideos(response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                //TODO Show Error message
+            }
+        });
+
+        // Adding JsonObject request to request queue
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectReq);
+    }
+
+    private void performOnResponseMovieVideos(String movieVideoJSON) {
+
+        Gson gson = new Gson();
+        movieVideoTO = gson.fromJson(movieVideoJSON, MovieVideoTO.class);
+        Log.d(TAG, "David: " + "performOnResponseMovieVideos() called with: movieVideoJSON = [" + movieVideoJSON + "]");
     }
 
 }
