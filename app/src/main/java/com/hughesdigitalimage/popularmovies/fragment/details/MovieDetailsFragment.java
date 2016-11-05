@@ -1,12 +1,16 @@
-package com.hughesdigitalimage.popularmovies.fragment;
+package com.hughesdigitalimage.popularmovies.fragment.details;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +25,20 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
+import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
+import com.hughesdigitalimage.popularmovies.to.video.MovieType;
+import com.hughesdigitalimage.popularmovies.to.video.MovieVideoResultTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoTO;
 import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
+import com.hughesdigitalimage.popularmovies.util.IsRequestedPackageInstalled;
+import com.hughesdigitalimage.popularmovies.util.ListUtils;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelperCallback;
+import com.hughesdigitalimage.popularmovies.util.StringUtils;
 import com.hughesdigitalimage.popularmovies.util.VolleySingleton;
 
 import org.json.JSONObject;
@@ -36,13 +46,17 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by David on 9/24/16.
  */
 
-public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallback {
+public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallback, MovieVideoCallback {
 
     public final static String MOVIE_DB_DETAILS_IMAGE_URL = "http://image.tmdb.org/t/p/w154";
     public static final String EXTRA_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.fragment.movieFragment.movieDetails";
@@ -65,6 +79,9 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private String movieID;
+    private RecyclerView videoRecyclerView;
+    private MovieVideoAdapter movieVideoAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,8 +116,19 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
         toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
 
+        videoRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_video_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        videoRecyclerView.setLayoutManager(layoutManager);
+
+
         fetchMovieDetails();
         fetchMovieVideos();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        movieVideoAdapter.onSaveInstanceState(outState);
     }
 
 
@@ -167,7 +195,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     }
 
 
-    public void fetchMovieVideos(){
+    public void fetchMovieVideos() {
 
 
         String movieVideosURL = getString(R.string.movie_videos_endpoint_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
@@ -198,6 +226,89 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         Gson gson = new Gson();
         movieVideoTO = gson.fromJson(movieVideoJSON, MovieVideoTO.class);
         Log.d(TAG, "David: " + "performOnResponseMovieVideos() called with: movieVideoJSON = [" + movieVideoJSON + "]");
+
+        if (movieVideoJSON == null) {
+            return;
+        }
+
+        List<MovieType> movieVideos = getVideoPreviewList();
+
+        if (ListUtils.isEmpty(movieVideos)) {
+            return;
+            //TODO remove video section nothing to see
+        }
+
+        if (movieVideoAdapter == null) {
+            WeakReference<MovieVideoCallback> weakReferenceMovieVideoCallback = new WeakReference<MovieVideoCallback>(this);
+            movieVideoAdapter = new MovieVideoAdapter(movieVideos, weakReferenceMovieVideoCallback);
+        }
+
+        videoRecyclerView.setAdapter(movieVideoAdapter);
+
     }
 
+    private List<MovieType> getVideoPreviewList() {
+
+        List<MovieVideoResultTO> videoResults = movieVideoTO.getResults();
+
+        if (ListUtils.isEmpty(videoResults)) {
+            return null;
+        }
+
+        List<String> videoTypes = getVideoTypes(videoResults);
+        List<MovieType> videos = new ArrayList<MovieType>();
+
+        for (String videoType : videoTypes) {
+            List<MovieVideoResultTO> movieVideoResultTOs = getAllVidesOfSameType(videoResults, videoType);
+            videos.add(new MovieType(videoType, movieVideoResultTOs));
+        }
+
+        return videos;
+    }
+
+    private List<MovieVideoResultTO> getAllVidesOfSameType(List<MovieVideoResultTO> videoResults, String videoType) {
+
+        List<MovieVideoResultTO> movieVideoResultTOs = new ArrayList<MovieVideoResultTO>();
+
+        for (MovieVideoResultTO videoResult : videoResults) {
+
+            if (videoType.equalsIgnoreCase(videoResult.getType())) {
+                movieVideoResultTOs.add(videoResult);
+            }
+        }
+        return movieVideoResultTOs;
+    }
+
+    private List<String> getVideoTypes(List<MovieVideoResultTO> videoResults) {
+
+        List<String> types = new ArrayList<String>();
+
+        for (MovieVideoResultTO videoResult : videoResults) {
+            String type = videoResult.getType();
+            if (StringUtils.isNotEmpty(type)) {
+                types.add(type);
+            }
+        }
+
+        Set<String> uniqueTypes = new HashSet<String>(types);
+        return new ArrayList<String>(uniqueTypes);
+    }
+
+
+    @Override
+    public void onMovieSelected(MovieVideoResultTO movieVideoResultTO) {
+        String youTubeKey = movieVideoResultTO.getKey();
+        String youTubePackage = "com.google.android.youtube";
+
+        WeakReference<Activity> activityWeakReference = new WeakReference<Activity>(getActivity());
+        boolean isYouTubeInstalled = IsRequestedPackageInstalled.execute(activityWeakReference, youTubePackage);
+
+        Intent videoIntent;
+        if (isYouTubeInstalled) {
+            videoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youTubeKey));
+        } else {
+            videoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youTubeKey));
+        }
+        startActivity(videoIntent);
+    }
 }

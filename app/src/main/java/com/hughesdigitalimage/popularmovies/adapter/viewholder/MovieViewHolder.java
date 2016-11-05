@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.hughesdigitalimage.popularmovies.R;
-import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsCallbacks;
+import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsCallbacks;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 
 import java.lang.ref.WeakReference;

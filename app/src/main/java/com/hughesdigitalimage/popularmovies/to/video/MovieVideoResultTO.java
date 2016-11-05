@@ -1,9 +1,11 @@
-
 package com.hughesdigitalimage.popularmovies.to.video;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MovieResultTO {
+public class MovieVideoResultTO implements Parcelable {
 
     @SerializedName("id")
     private String id;
@@ -22,6 +24,10 @@ public class MovieResultTO {
     @SerializedName("type")
     private String type;
 
+    public MovieVideoResultTO(String type, String name ){
+        this.type = type;
+        this.name = name;
+    }
 
     public String getId() {
         return id;
@@ -90,4 +96,50 @@ public class MovieResultTO {
         this.type = type;
     }
 
+
+    public MovieVideoResultTO(Parcel in) {
+        id = in.readString();
+        iso6391 = in.readString();
+        iso31661 = in.readString();
+        key = in.readString();
+        name = in.readString();
+        site = in.readString();
+        size = in.readByte() == 0x00 ? null : in.readInt();
+        type = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(iso6391);
+        dest.writeString(iso31661);
+        dest.writeString(key);
+        dest.writeString(name);
+        dest.writeString(site);
+        if (size == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(size);
+        }
+        dest.writeString(type);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MovieVideoResultTO> CREATOR = new Parcelable.Creator<MovieVideoResultTO>() {
+        @Override
+        public MovieVideoResultTO createFromParcel(Parcel in) {
+            return new MovieVideoResultTO(in);
+        }
+
+        @Override
+        public MovieVideoResultTO[] newArray(int size) {
+            return new MovieVideoResultTO[size];
+        }
+    };
 }

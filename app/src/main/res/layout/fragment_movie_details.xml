@@ -95,23 +95,37 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/material_margin"
+            android:layout_marginBottom="@dimen/material_space_margin"
+            android:layout_marginLeft="@dimen/material_margin"
+            android:layout_marginRight="@dimen/material_margin"
+            android:layout_marginTop="@dimen/material_margin"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_play_circle_outline"/>
+
 
             <TextView
                 style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_marginLeft="@dimen/material_space_margin"
-                android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Play Videos"/>
+                android:layout_gravity="center_horizontal|center_vertical"
+
+                android:text="Play Videos" />
         </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:paddingTop="@dimen/material_space_margin"
+                android:paddingBottom="@dimen/material_space_margin"
+                android:id="@+id/movie_video_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/layout_movie_row" />
+
+        </FrameLayout>
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.adapter.viewholder.MovieViewHolder;
-import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsCallbacks;
+import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsCallbacks;
 import com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;

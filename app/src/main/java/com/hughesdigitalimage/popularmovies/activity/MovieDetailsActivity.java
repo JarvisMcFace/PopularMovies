@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.hughesdigitalimage.popularmovies.R;
-import com.hughesdigitalimage.popularmovies.fragment.MovieDetailsFragment;
+import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsFragment;
 
 /**
  * Created by David on 9/24/16.

@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.activity.MovieDetailsActivity;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
+import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsCallbacks;
+import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsFragment;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.PopularMoviesTO;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
