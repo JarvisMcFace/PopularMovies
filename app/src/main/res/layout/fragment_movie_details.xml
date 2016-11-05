@@ -90,14 +90,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/material_margin"
-            tools:text="OverView" />
+            tools:text="@string/overview" />
 
         <include
             layout="@layout/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/material_margin"
-            android:layout_marginRight="@dimen/material_margin" />
+            android:layout_marginLeft="@dimen/movie_video_indent"
+            android:layout_marginRight="@dimen/movie_video_indent" />
 
         <TextView
             style="@style/Base.TextAppearance.AppCompat.Body1"
@@ -106,22 +106,33 @@
             android:layout_marginLeft="@dimen/material_margin"
             android:layout_marginRight="@dimen/material_margin"
             android:layout_marginTop="@dimen/material_margin"
-            android:text="Play Videos" />
+            android:text="@string/videos" />
 
-        <FrameLayout
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_video_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/material_space_margin"
+            android:paddingTop="@dimen/material_space_margin"
+            tools:layout="@layout/layout_movie_row" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/movie_video_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/material_space_margin"
-                android:paddingTop="@dimen/material_space_margin"
-                tools:layout="@layout/layout_movie_row" />
 
-        </FrameLayout>
+        <include
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/movie_video_indent"
+            android:layout_marginRight="@dimen/movie_video_indent" />
 
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/material_margin"
+            android:layout_marginRight="@dimen/material_margin"
+            android:layout_marginTop="@dimen/material_margin"
+            android:text="@string/reviews_commentary" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

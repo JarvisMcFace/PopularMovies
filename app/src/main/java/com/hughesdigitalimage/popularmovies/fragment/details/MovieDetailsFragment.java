@@ -28,6 +28,7 @@ import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
+import com.hughesdigitalimage.popularmovies.to.review.MovieReviewTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieType;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoResultTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoTO;
@@ -36,8 +37,6 @@ import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
 import com.hughesdigitalimage.popularmovies.util.IsRequestedPackageInstalled;
 import com.hughesdigitalimage.popularmovies.util.ListUtils;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
-import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
-import com.hughesdigitalimage.popularmovies.util.OkHttpHelperCallback;
 import com.hughesdigitalimage.popularmovies.util.StringUtils;
 import com.hughesdigitalimage.popularmovies.util.VolleySingleton;
 
@@ -56,7 +55,7 @@ import java.util.Set;
  * Created by David on 9/24/16.
  */
 
-public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallback, MovieVideoCallback {
+public class MovieDetailsFragment extends Fragment implements MovieVideoCallback {
 
     public final static String MOVIE_DB_DETAILS_IMAGE_URL = "http://image.tmdb.org/t/p/w154";
     public static final String EXTRA_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.fragment.movieFragment.movieDetails";
@@ -72,10 +71,10 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     private TextView overview;
     private TextView releasedDate;
 
-
     private ProgressBar progressSpinnerMovieDetails;
     private MoviesTO moviesTO;
     private MovieVideoTO movieVideoTO;
+    private MovieReviewTO movieReviewTO;
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private String movieID;
@@ -123,6 +122,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
         fetchMovieDetails();
         fetchMovieVideos();
+        fetchMovieReviews();
     }
 
     @Override
@@ -132,8 +132,7 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     }
 
 
-    @Override
-    public void performOnPostExecute(String jsonResults) {
+    public void performOnResponseMovieDetails(String jsonResults) {
         Gson gson = new Gson();
         moviesTO = gson.fromJson(jsonResults, MoviesTO.class);
         loadData();
@@ -168,19 +167,40 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
 
     }
 
-    private void fetchMovieDetails() {
+    public void fetchMovieDetails() {
 
         if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
             Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
+        if (moviesTO != null) {
+            return;
+        }
         progressSpinnerMovieDetails.setVisibility(View.VISIBLE);
         String urlMovieDetails = getString(R.string.movie_basic_informaiton_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
-        WeakReference<OkHttpHelperCallback> weakReferenceOkHttpHelperCallback = new WeakReference<OkHttpHelperCallback>(this);
-        OkHttpHelper okHttpHelper = new OkHttpHelper(weakReferenceOkHttpHelperCallback);
-        okHttpHelper.execute(urlMovieDetails);
+
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(urlMovieDetails, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        performOnResponseMovieDetails(response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                //TODO Show Error message
+            }
+        });
+
+        // Adding JsonObject request to request queue
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectReq);
     }
+
+
 
 
     private String getReleaseYearDate() {
@@ -195,18 +215,51 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
     }
 
 
-    public void fetchMovieVideos() {
 
+    public void fetchMovieVideos() {
+        if (!NetworkUtil.isDeviceConnectedToNetwork(new WeakReference<Context>(getActivity()))) {
+            Snackbar.make(rootView, getString(R.string.no_network_connection), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (movieVideoTO != null) {
+            return;
+        }
 
         String movieVideosURL = getString(R.string.movie_videos_endpoint_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
+        JsonObjectRequest jsonObjectReq = new JsonObjectRequest(movieVideosURL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        performOnResponseMovieVideos(response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                //TODO Show Error message
+            }
+        });
+
+        // Adding JsonObject request to request queue
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectReq);
+    }
+
+    public void fetchMovieReviews() {
+
+        if (movieReviewTO != null) {
+            return;
+        }
+        String movieVideosURL = getString(R.string.movie_videos_review_url, movieID) + GetTheMoveDatabaseAPIKey.execute(getResources());
 
         JsonObjectRequest jsonObjectReq = new JsonObjectRequest(movieVideosURL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-
-                        performOnResponseMovieVideos(response.toString());
+                        performOnResponseMovieReviews(response.toString());
 
                     }
                 }, new Response.ErrorListener() {
@@ -244,6 +297,20 @@ public class MovieDetailsFragment extends Fragment implements OkHttpHelperCallba
         }
 
         videoRecyclerView.setAdapter(movieVideoAdapter);
+
+    }
+
+    private void performOnResponseMovieReviews(String movieReviewsJSON) {
+
+        Gson gson = new Gson();
+        movieReviewTO = gson.fromJson(movieReviewsJSON, MovieReviewTO.class);
+        Log.d(TAG, "David: " + "performOnResponseMovieVideos() called with: movieVideoJSON = [" + movieReviewsJSON + "]");
+
+        if (movieReviewsJSON == null) {
+            return;
+        }
+
+
 
     }
 
