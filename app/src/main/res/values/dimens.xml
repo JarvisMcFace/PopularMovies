@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="single_list_item">40dp</dimen>
+    <dimen name="two_line_list_item">72dp</dimen>
 
 
     <dimen name="material_margin">16dp</dimen>
@@ -12,4 +13,5 @@
     <dimen name="toolbar_margin_bottom">24dp</dimen>
     <dimen name="material_margin_divider">8dp</dimen>
     <dimen name="movie_video_indent">32dp</dimen>
+    <dimen name="subheader_title">48dp</dimen>
 </resources>

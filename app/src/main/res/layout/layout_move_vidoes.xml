@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_movie_details">
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/subheader_title"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/material_margin"
+        android:layout_marginRight="@dimen/material_margin"
+        android:layout_marginTop="@dimen/material_margin"
+        android:text="@string/videos" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/movie_video_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/material_space_margin"
+        android:paddingTop="@dimen/material_space_margin"
+        tools:layout="@layout/layout_movie_row" />
+</merge>

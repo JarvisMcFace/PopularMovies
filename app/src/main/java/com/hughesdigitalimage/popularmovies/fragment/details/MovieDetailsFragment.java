@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
 import com.hughesdigitalimage.popularmovies.to.review.MovieReviewTO;
+import com.hughesdigitalimage.popularmovies.to.review.ReviewTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieType;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoResultTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoTO;
@@ -71,6 +73,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     private TextView overview;
     private TextView releasedDate;
 
+    private LinearLayout reviewContainer;
     private ProgressBar progressSpinnerMovieDetails;
     private MoviesTO moviesTO;
     private MovieVideoTO movieVideoTO;
@@ -110,7 +113,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         releasedDate = (TextView) rootView.findViewById(R.id.details_movie_released_date);
         voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
         overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
-
+        reviewContainer = (LinearLayout) rootView.findViewById(R.id.review_container);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
         toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
@@ -310,7 +313,40 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             return;
         }
 
+        List<ReviewTO> reviewTOs = movieReviewTO.getResults();
 
+        if (ListUtils.isEmpty(reviewTOs)){
+
+            LinearLayout reviewsCommentary = (LinearLayout) rootView.findViewById(R.id.layout_reviews_commentary);
+            reviewsCommentary.setVisibility(View.GONE);
+            return;
+            //TODO remove container if no reviews
+        }
+
+        LayoutInflater inflator = getActivity().getLayoutInflater();
+        reviewContainer.removeAllViews();
+
+        for (ReviewTO reviewTO : reviewTOs) {
+
+            LinearLayout reviewRow = (LinearLayout) inflator.inflate(R.layout.layout_review,null);
+            TextView arthur = (TextView) reviewRow.findViewById(R.id.movie_review_arthur);
+            TextView review = (TextView) reviewRow.findViewById(R.id.movie_review_text);
+
+            arthur.setText(reviewTO.getAuthor());
+            review.setText(reviewTO.getContent());
+
+            reviewRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO SHOW FULL REVIEW
+                    Log.d(TAG, "David: " + "onClick() called with: v = [" + v + "]");
+                }
+            });
+
+
+            reviewContainer.addView(reviewRow);;
+
+        }
 
     }
 

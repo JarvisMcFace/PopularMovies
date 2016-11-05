@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_review"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/two_line_list_item"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/material_space_margin"
+    android:paddingLeft="@dimen/material_margin"
+    android:paddingRight="@dimen/material_margin">
+
+    <TextView
+        android:id="@+id/movie_review_arthur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        tools:text="Linda Robinson" />
+
+    <TextView
+        android:id="@+id/movie_review_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        tools:text="Movie Review" />
+
+</LinearLayout>

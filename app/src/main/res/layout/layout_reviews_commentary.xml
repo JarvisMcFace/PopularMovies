@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_reviews_commentary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:showIn="@layout/fragment_movie_details">
+
+
+    <include
+        layout="@layout/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/movie_video_indent"
+        android:layout_marginRight="@dimen/movie_video_indent" />
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/subheader_title"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/material_margin"
+        android:layout_marginRight="@dimen/material_margin"
+        android:layout_marginTop="@dimen/material_margin"
+        android:paddingBottom="@dimen/material_space_margin"
+        android:text="@string/reviews_commentary" />
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/material_margin"
+        android:id="@+id/review_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+</LinearLayout>
