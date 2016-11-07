@@ -84,7 +84,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     private String movieID;
     private RecyclerView videoRecyclerView;
     private MovieVideoAdapter movieVideoAdapter;
-
+    private ImageView favoriteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -125,9 +125,23 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         videoRecyclerView.setLayoutManager(layoutManager);
 
 
+        setupFavoriteButton();
         fetchMovieDetails();
         fetchMovieVideos();
         fetchMovieReviews();
+    }
+
+    private void setupFavoriteButton() {
+
+        favoriteButton = (ImageView) rootView.findViewById(R.id.favorite_movie);
+
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                favoriteButton.setImageResource(R.drawable.ic_star);
+            }
+        });
     }
 
     @Override
