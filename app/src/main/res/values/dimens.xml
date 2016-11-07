@@ -14,4 +14,7 @@
     <dimen name="material_margin_divider">8dp</dimen>
     <dimen name="movie_video_indent">32dp</dimen>
     <dimen name="subheader_title">48dp</dimen>
+    <dimen name="review_movie_title_size">20sp</dimen>
+    <dimen name="review_movie_arthur_size">16sp</dimen>
+    <dimen name="review_movie_content_size">14sp</dimen>
 </resources>

@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    android:visibility="gone"
+    tools:visibility="visible"
     tools:showIn="@layout/fragment_movie_details">
 
 
@@ -16,6 +19,7 @@
         android:layout_marginRight="@dimen/movie_video_indent" />
 
     <TextView
+        android:id="@+id/review_commentary_title"
         style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/subheader_title"
@@ -32,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
 
 
     </LinearLayout>

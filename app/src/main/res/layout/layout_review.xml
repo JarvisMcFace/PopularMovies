@@ -6,6 +6,7 @@
     android:layout_height="@dimen/two_line_list_item"
     android:orientation="vertical"
     android:paddingBottom="@dimen/material_space_margin"
+    android:background="?attr/selectableItemBackground"
     android:paddingLeft="@dimen/material_margin"
     android:paddingRight="@dimen/material_margin">
 

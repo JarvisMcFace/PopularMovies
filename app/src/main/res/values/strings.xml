@@ -16,4 +16,5 @@
     <string name="reviews_commentary">Reviews &amp; Commentary</string>
     <string name="videos">Play Videos</string>
     <string name="overview">OverView</string>
+    <string name="activity_movie_review_content">Movie Review</string>
 </resources>

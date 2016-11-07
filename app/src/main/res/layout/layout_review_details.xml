@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/material_margin"
+    android:layout_marginRight="@dimen/material_margin"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/review_movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/material_margin"
+            android:layout_marginLeft="@dimen/material_margin"
+            android:layout_marginRight="@dimen/material_margin"
+            android:paddingTop="@dimen/material_margin"
+            android:textSize="@dimen/review_movie_title_size"
+            android:textStyle="bold"
+            tools:text="Movie Title" />
+
+
+        <include
+            layout="@layout/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/movie_video_indent"
+            android:layout_marginRight="@dimen/movie_video_indent" />
+
+        <TextView
+            android:id="@+id/review_movie_arthur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/material_margin"
+            android:layout_marginRight="@dimen/material_margin"
+            android:layout_marginTop="@dimen/material_space_margin"
+            android:textSize="@dimen/review_movie_arthur_size"
+            tools:text="Movie Arthor" />
+
+        <TextView
+            android:id="@+id/review_movie_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/material_margin"
+            android:layout_marginLeft="@dimen/material_margin"
+            android:layout_marginRight="@dimen/material_margin"
+            android:paddingTop="@dimen/material_margin"
+            android:textSize="@dimen/review_movie_content_size"
+            tools:text="Review Content" />
+
+    </LinearLayout>
+</ScrollView>

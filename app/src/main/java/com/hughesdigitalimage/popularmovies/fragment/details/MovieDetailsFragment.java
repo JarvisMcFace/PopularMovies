@@ -26,6 +26,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
+import com.hughesdigitalimage.popularmovies.activity.ReviewDetailActivity;
 import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
@@ -114,6 +115,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
         overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
         reviewContainer = (LinearLayout) rootView.findViewById(R.id.review_container);
+
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
         toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
@@ -287,6 +289,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             return;
         }
 
+
         List<MovieType> movieVideos = getVideoPreviewList();
 
         if (ListUtils.isEmpty(movieVideos)) {
@@ -294,6 +297,8 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             //TODO remove video section nothing to see
         }
 
+        View videoContainer = rootView.findViewById(R.id.movie_vidoes_container);
+        videoContainer.setVisibility(View.VISIBLE);
         if (movieVideoAdapter == null) {
             WeakReference<MovieVideoCallback> weakReferenceMovieVideoCallback = new WeakReference<MovieVideoCallback>(this);
             movieVideoAdapter = new MovieVideoAdapter(movieVideos, weakReferenceMovieVideoCallback);
@@ -315,18 +320,18 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         List<ReviewTO> reviewTOs = movieReviewTO.getResults();
 
+        LinearLayout reviewsCommentary = (LinearLayout) rootView.findViewById(R.id.layout_reviews_commentary);
         if (ListUtils.isEmpty(reviewTOs)){
 
-            LinearLayout reviewsCommentary = (LinearLayout) rootView.findViewById(R.id.layout_reviews_commentary);
             reviewsCommentary.setVisibility(View.GONE);
             return;
-            //TODO remove container if no reviews
         }
 
+        reviewsCommentary.setVisibility(View.VISIBLE);
         LayoutInflater inflator = getActivity().getLayoutInflater();
         reviewContainer.removeAllViews();
 
-        for (ReviewTO reviewTO : reviewTOs) {
+        for (final ReviewTO reviewTO : reviewTOs) {
 
             LinearLayout reviewRow = (LinearLayout) inflator.inflate(R.layout.layout_review,null);
             TextView arthur = (TextView) reviewRow.findViewById(R.id.movie_review_arthur);
@@ -338,8 +343,11 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             reviewRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO SHOW FULL REVIEW
-                    Log.d(TAG, "David: " + "onClick() called with: v = [" + v + "]");
+                    Intent intent = new Intent(getActivity(), ReviewDetailActivity.class);
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_TITLE,moviesTO.getTitle());
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_AURTHUR,reviewTO.getAuthor());
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_CONTENT,reviewTO.getContent());
+                    startActivity(intent);
                 }
             });
 

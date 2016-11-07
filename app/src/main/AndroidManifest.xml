@@ -22,9 +22,14 @@
 
         <activity
             android:name=".activity.MovieDetailsActivity"
-            android:label="@string/activity_movie_detials_title"
+
             android:parentActivityName=".activity.PopularMoviesActivity">
         </activity>
+
+        <activity android:name=".activity.ReviewDetailActivity"
+            android:theme="@style/Review_Modal"
+            android:label="@string/activity_movie_review_content"/>
+
     </application>
 
 </manifest>
