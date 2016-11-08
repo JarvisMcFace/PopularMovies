@@ -58,8 +58,22 @@ public class FavoriteMovieDbAdapter {
         return rowDeleted;
     }
 
-    public Cursor queryFavorite(String[] selectionArgs) {
+    public Cursor queryAllFavoriteMovies() {
+
+        Cursor cursor = sqLiteDatabase.query(
+                FAVORITE_MOVIE_TABLE,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        return cursor;
+    }
+    public Cursor queryFavorite(String movieID) {
         String selectionClause = FavoriteMoviesContract.MOVIE_ID + " = ?";
+        String[] selectionArgs = {movieID};
         Cursor cursor = sqLiteDatabase.query(
                 FAVORITE_MOVIE_TABLE,
                 null,

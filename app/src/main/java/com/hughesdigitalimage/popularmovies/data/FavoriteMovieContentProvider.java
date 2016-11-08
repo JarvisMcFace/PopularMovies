@@ -20,9 +20,12 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     private static final String AUTHORITY = "com.hughesdigitalimage.favorite.movie.contentprovider";
     private static final String BASE_PATH = "favoritemovie";
 
-    private static final int FAVORITE_MOVIES = 100;
+    private static final int FAVORITE_MOVIE = 100;
+    private static final int ALL_FAVORITE_MOVIES = 101;
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
+    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + BASE_PATH;
+
     private static final UriMatcher uriMatcher = buildUriMatcher();
     private FavoriteMovieDbAdapter favoriteMovieDbAdapter;
 
@@ -39,7 +42,15 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return  favoriteMovieDbAdapter.queryFavorite(selectionArgs);
+        switch (uriMatcher.match(uri)) {
+            case ALL_FAVORITE_MOVIES:
+                return favoriteMovieDbAdapter.queryAllFavoriteMovies();
+            case FAVORITE_MOVIE:
+                String favoriteMovieID = uri.getLastPathSegment();
+                return favoriteMovieDbAdapter.queryFavorite(favoriteMovieID);
+            default:
+                throw new UnsupportedOperationException("Unknown uri " + uri);
+        }
     }
 
     @Nullable
@@ -56,7 +67,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return favoriteMovieDbAdapter.deleteFavoirteMovie(selection,selectionArgs);
+        return favoriteMovieDbAdapter.deleteFavoirteMovie(selection, selectionArgs);
     }
 
     @Override
@@ -67,16 +78,29 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = uriMatcher.match(uri);
+        switch (match) {
+            case ALL_FAVORITE_MOVIES:
+                return CONTENT_ITEM_TYPE;
+            case FAVORITE_MOVIE:
+                return CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri " + uri);
+        }
     }
 
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, BASE_PATH, FAVORITE_MOVIES);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH, ALL_FAVORITE_MOVIES);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH + "/*", FAVORITE_MOVIE);
         return uriMatcher;
     }
 
-    public static ContentValues getContentValues(PopularMovieDetailsTO popularMovieDetailsTO ) {
+    public static Uri buildFavoriteMovieWithKey(String movieID){
+        return CONTENT_URI.buildUpon().appendPath(movieID).build();
+    }
+
+    public static ContentValues getContentValues(PopularMovieDetailsTO popularMovieDetailsTO) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(FavoriteMoviesContract.MOVIE_ID, popularMovieDetailsTO.getId());

@@ -3,6 +3,7 @@ package com.hughesdigitalimage.popularmovies.util;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.hughesdigitalimage.popularmovies.data.FavoriteMovieContentProvider;
 
@@ -18,7 +19,8 @@ public class IsMovieAFavoriteMovie {
         String[] selectionArg = {movieID};
         Cursor cursor = null;
         try {
-            cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI, null, null, selectionArg, null);
+            Uri uri = FavoriteMovieContentProvider.buildFavoriteMovieWithKey(movieID);
+            cursor = contentResolver.query(uri, null, null, selectionArg, null);
 
             if (cursor == null || cursor.getCount() == 0) {
                 return false;

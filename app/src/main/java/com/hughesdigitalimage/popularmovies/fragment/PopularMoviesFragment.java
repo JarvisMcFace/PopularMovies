@@ -1,7 +1,9 @@
 package com.hughesdigitalimage.popularmovies.fragment;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -19,6 +21,8 @@ import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.activity.MovieDetailsActivity;
 import com.hughesdigitalimage.popularmovies.adapter.MovieAdapter;
+import com.hughesdigitalimage.popularmovies.data.FavoriteMovieContentProvider;
+import com.hughesdigitalimage.popularmovies.data.FavoriteMovieCursorHelper;
 import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsCallbacks;
 import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsFragment;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
@@ -46,6 +50,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private MovieAdapter adapter;
     private List<PopularMovieDetailsTO> moviesTOList;
     private PopularMoviesTO popularMoviesTO;
+    private boolean isShowingFavorites;
 
     @Nullable
     @Override
@@ -76,7 +81,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -89,6 +93,11 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
         if (id == R.id.sort_top_rated) {
             sortByTopRated();
+            return true;
+        }
+
+        if (id == R.id.sort_favorite) {
+            showFavoriteMovies();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -132,6 +141,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     private void sortByMostPopular() {
+        
         if (adapter != null) {
             Collections.sort(moviesTOList, new PopularMoviesComparator());
             loadData();
@@ -149,14 +159,27 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void loadData() {
 
-
-
         if (moviesTOList != null) {
             WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
             WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
             adapter = new MovieAdapter(moviesTOList, contextWeakReference, weakMovieDetailsCallbacks);
-
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    private void showFavoriteMovies() {
+
+        ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
+        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+
+        if (cursor == null || cursor.getCount() == 0){
+            Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
+        isShowingFavorites =true;
+        loadData();
+
     }
 }
