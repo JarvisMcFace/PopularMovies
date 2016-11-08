@@ -1,6 +1,8 @@
 package com.hughesdigitalimage.popularmovies.fragment.details;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +30,8 @@ import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.activity.ReviewDetailActivity;
 import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
+import com.hughesdigitalimage.popularmovies.data.FavoriteMovieContentProvider;
+import com.hughesdigitalimage.popularmovies.data.FavoriteMoviesContract;
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.movie.MoviesTO;
 import com.hughesdigitalimage.popularmovies.to.review.MovieReviewTO;
@@ -85,6 +89,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     private RecyclerView videoRecyclerView;
     private MovieVideoAdapter movieVideoAdapter;
     private ImageView favoriteButton;
+    private boolean isFavoriteMovie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -138,10 +143,30 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                favoriteButton.setImageResource(R.drawable.ic_star);
+                handleFavoriteMovieButton();
             }
         });
+    }
+
+    private void handleFavoriteMovieButton() {
+        ContentResolver contentResolver = getActivity().getContentResolver();
+
+        if (popularMovieDetailsTO == null) {
+            return;
+        }
+
+        if (isFavoriteMovie) {
+            isFavoriteMovie = false;
+            favoriteButton.setImageResource(R.drawable.ic_star_outline);
+            String selection = FavoriteMoviesContract.MOVIE_ID + " = ?";
+            String[] selectionArgs = {popularMovieDetailsTO.getId().toString()};
+            contentResolver.delete(FavoriteMovieContentProvider.CONTENT_URI,selection,selectionArgs);
+        } else {
+            isFavoriteMovie = true;
+            favoriteButton.setImageResource(R.drawable.ic_star);
+            ContentValues contentValues = FavoriteMovieContentProvider.getContentValues(popularMovieDetailsTO);
+            contentResolver.insert(FavoriteMovieContentProvider.CONTENT_URI, contentValues);
+        }
     }
 
     @Override
@@ -220,8 +245,6 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     }
 
 
-
-
     private String getReleaseYearDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date convertedCurrentDate = null;
@@ -232,7 +255,6 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         }
         return sdf.format(convertedCurrentDate);
     }
-
 
 
     public void fetchMovieVideos() {
@@ -335,7 +357,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         List<ReviewTO> reviewTOs = movieReviewTO.getResults();
 
         LinearLayout reviewsCommentary = (LinearLayout) rootView.findViewById(R.id.layout_reviews_commentary);
-        if (ListUtils.isEmpty(reviewTOs)){
+        if (ListUtils.isEmpty(reviewTOs)) {
 
             reviewsCommentary.setVisibility(View.GONE);
             return;
@@ -347,7 +369,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         for (final ReviewTO reviewTO : reviewTOs) {
 
-            LinearLayout reviewRow = (LinearLayout) inflator.inflate(R.layout.layout_review,null);
+            LinearLayout reviewRow = (LinearLayout) inflator.inflate(R.layout.layout_review, null);
             TextView arthur = (TextView) reviewRow.findViewById(R.id.movie_review_arthur);
             TextView review = (TextView) reviewRow.findViewById(R.id.movie_review_text);
 
@@ -358,15 +380,16 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), ReviewDetailActivity.class);
-                    intent.putExtra(ReviewDetailsFragment.MOVIE_TITLE,moviesTO.getTitle());
-                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_AURTHUR,reviewTO.getAuthor());
-                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_CONTENT,reviewTO.getContent());
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_TITLE, moviesTO.getTitle());
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_AURTHUR, reviewTO.getAuthor());
+                    intent.putExtra(ReviewDetailsFragment.MOVIE_REVIEW_CONTENT, reviewTO.getContent());
                     startActivity(intent);
                 }
             });
 
 
-            reviewContainer.addView(reviewRow);;
+            reviewContainer.addView(reviewRow);
+            ;
 
         }
 

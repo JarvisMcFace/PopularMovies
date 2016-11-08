@@ -39,13 +39,21 @@ public class FavoriteMovieDbAdapter {
         return this;
     }
 
-    public void close () {
+    public void close() {
         sqLiteDatabase.close();
     }
 
     public long insertFavoriteMovie(ContentValues contentValues) {
-        return sqLiteDatabase.insert(FAVORITE_MOVIE_TABLE,null,contentValues);
+        return sqLiteDatabase.insert(FAVORITE_MOVIE_TABLE, null, contentValues);
     }
 
 
+    public int deleteFavoirteMovie(String selection, String[] selectionArgs) {
+        int rowDeleted = sqLiteDatabase.delete(
+                FAVORITE_MOVIE_TABLE,
+                selection,
+                selectionArgs
+        );
+        return rowDeleted;
+    }
 }

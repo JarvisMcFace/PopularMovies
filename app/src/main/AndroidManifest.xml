@@ -30,6 +30,12 @@
             android:theme="@style/Review_Modal"
             android:label="@string/activity_movie_review_content"/>
 
+        <provider
+            android:authorities="com.hughesdigitalimage.favorite.movie.contentprovider"
+            android:name=".data.FavoriteMovieContentProvider"
+            android:enabled="true"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

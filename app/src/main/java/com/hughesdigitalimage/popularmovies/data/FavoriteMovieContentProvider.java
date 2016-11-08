@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
+
 /**
  * Created by David on 11/6/16.
  */
@@ -20,7 +22,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
     private static final int FAVORITE_MOVIES = 100;
 
-    private static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
     private static final UriMatcher uriMatcher = buildUriMatcher();
     private FavoriteMovieDbAdapter favoriteMovieDbAdapter;
 
@@ -40,11 +42,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         return null;
     }
 
-    @Nullable
-    @Override
-    public String getType(Uri uri) {
-        return null;
-    }
+
 
     @Nullable
     @Override
@@ -60,7 +58,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        return favoriteMovieDbAdapter.deleteFavoirteMovie(selection,selectionArgs);
     }
 
     @Override
@@ -68,9 +66,29 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         return 0;
     }
 
+
+    @Nullable
+    @Override
+    public String getType(Uri uri) {
+        return null;
+    }
+
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, BASE_PATH, FAVORITE_MOVIES);
         return uriMatcher;
+    }
+
+    public static ContentValues getContentValues(PopularMovieDetailsTO popularMovieDetailsTO ) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FavoriteMoviesContract.MOVIE_ID, popularMovieDetailsTO.getId());
+        contentValues.put(FavoriteMoviesContract.TITLE, popularMovieDetailsTO.getTitle());
+        contentValues.put(FavoriteMoviesContract.OVERVIEW, popularMovieDetailsTO.getOverview());
+        contentValues.put(FavoriteMoviesContract.RELEASE_DATE, popularMovieDetailsTO.getReleaseDate());
+        contentValues.put(FavoriteMoviesContract.POSTER_PATH, popularMovieDetailsTO.getPosterPath());
+        contentValues.put(FavoriteMoviesContract.BACKDROP_PATH, popularMovieDetailsTO.getBackdropPath());
+
+        return contentValues;
     }
 }
