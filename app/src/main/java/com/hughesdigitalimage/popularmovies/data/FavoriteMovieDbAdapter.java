@@ -2,6 +2,7 @@ package com.hughesdigitalimage.popularmovies.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -55,5 +56,19 @@ public class FavoriteMovieDbAdapter {
                 selectionArgs
         );
         return rowDeleted;
+    }
+
+    public Cursor queryFavorite(String[] selectionArgs) {
+        String selectionClause = FavoriteMoviesContract.MOVIE_ID + " = ?";
+        Cursor cursor = sqLiteDatabase.query(
+                FAVORITE_MOVIE_TABLE,
+                null,
+                selectionClause,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        return cursor;
     }
 }

@@ -1,6 +1,7 @@
 package com.hughesdigitalimage.popularmovies.fragment.details;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -41,6 +42,7 @@ import com.hughesdigitalimage.popularmovies.to.video.MovieVideoResultTO;
 import com.hughesdigitalimage.popularmovies.to.video.MovieVideoTO;
 import com.hughesdigitalimage.popularmovies.util.FetchMoviePoster;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
+import com.hughesdigitalimage.popularmovies.util.IsMovieAFavoriteMovie;
 import com.hughesdigitalimage.popularmovies.util.IsRequestedPackageInstalled;
 import com.hughesdigitalimage.popularmovies.util.ListUtils;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
@@ -140,12 +142,26 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         favoriteButton = (ImageView) rootView.findViewById(R.id.favorite_movie);
 
+
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleFavoriteMovieButton();
             }
         });
+        Application application = getActivity().getApplication();
+        isFavoriteMovie = IsMovieAFavoriteMovie.execute(application,popularMovieDetailsTO.getId().toString());
+
+        showAsFavorite(isFavoriteMovie);
+    }
+
+    private void showAsFavorite(boolean isFavoriteMovie) {
+
+        if (isFavoriteMovie) {
+            favoriteButton.setImageResource(R.drawable.ic_star);
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_star_outline);
+        }
     }
 
     private void handleFavoriteMovieButton() {
@@ -157,13 +173,13 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         if (isFavoriteMovie) {
             isFavoriteMovie = false;
-            favoriteButton.setImageResource(R.drawable.ic_star_outline);
+            showAsFavorite(isFavoriteMovie);
             String selection = FavoriteMoviesContract.MOVIE_ID + " = ?";
             String[] selectionArgs = {popularMovieDetailsTO.getId().toString()};
             contentResolver.delete(FavoriteMovieContentProvider.CONTENT_URI,selection,selectionArgs);
         } else {
             isFavoriteMovie = true;
-            favoriteButton.setImageResource(R.drawable.ic_star);
+            showAsFavorite(isFavoriteMovie);
             ContentValues contentValues = FavoriteMovieContentProvider.getContentValues(popularMovieDetailsTO);
             contentResolver.insert(FavoriteMovieContentProvider.CONTENT_URI, contentValues);
         }

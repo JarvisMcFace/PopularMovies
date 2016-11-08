@@ -39,10 +39,8 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        return  favoriteMovieDbAdapter.queryFavorite(selectionArgs);
     }
-
-
 
     @Nullable
     @Override
@@ -65,7 +63,6 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
-
 
     @Nullable
     @Override
