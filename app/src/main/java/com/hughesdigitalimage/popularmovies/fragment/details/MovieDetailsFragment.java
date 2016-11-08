@@ -112,20 +112,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         }
 
         movieID = String.valueOf(popularMovieDetailsTO.getId());
-
-        detailPoster = (ImageView) rootView.findViewById(R.id.details_movie_poster);
-        progressSpinnerMovieDetails = (ProgressBar) rootView.findViewById(R.id.details_progress_spinner);
-
-        year = (TextView) rootView.findViewById(R.id.details_movie_year);
-        runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
-        releasedDate = (TextView) rootView.findViewById(R.id.details_movie_released_date);
-        voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
-        overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
-        reviewContainer = (LinearLayout) rootView.findViewById(R.id.review_container);
-
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
-        toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
+        setupViews();
 
         videoRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_video_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -136,6 +123,19 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         fetchMovieDetails();
         fetchMovieVideos();
         fetchMovieReviews();
+    }
+
+    private void setupViews() {
+        detailPoster = (ImageView) rootView.findViewById(R.id.details_movie_poster);
+        progressSpinnerMovieDetails = (ProgressBar) rootView.findViewById(R.id.details_progress_spinner);
+        year = (TextView) rootView.findViewById(R.id.details_movie_year);
+        runningTime = (TextView) rootView.findViewById(R.id.details_movie_running_time);
+        releasedDate = (TextView) rootView.findViewById(R.id.details_movie_released_date);
+        voteAverage = (TextView) rootView.findViewById(R.id.details_movie_user_rating);
+        overview = (TextView) rootView.findViewById(R.id.details_movie_overview);
+        reviewContainer = (LinearLayout) rootView.findViewById(R.id.review_container);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
+        toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
     }
 
     private void setupFavoriteButton() {
