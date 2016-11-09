@@ -74,6 +74,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     private PopularMovieDetailsTO popularMovieDetailsTO;
     private ImageView detailPoster;
     private ImageView toolbarPoster;
+    private View movieDetailContainer;
     private TextView year;
     private TextView runningTime;
     private TextView voteAverage;
@@ -136,6 +137,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         reviewContainer = (LinearLayout) rootView.findViewById(R.id.review_container);
         collapsingToolbarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar_layout);
         toolbarPoster = (ImageView) getActivity().findViewById(R.id.toolbar_poster);
+        movieDetailContainer = rootView.findViewById(R.id.movie_detail_container);
     }
 
     private void setupFavoriteButton() {
@@ -153,15 +155,6 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         isFavoriteMovie = IsMovieAFavoriteMovie.execute(application,popularMovieDetailsTO.getId().toString());
 
         showAsFavorite(isFavoriteMovie);
-    }
-
-    private void showAsFavorite(boolean isFavoriteMovie) {
-
-        if (isFavoriteMovie) {
-            favoriteButton.setImageResource(R.drawable.ic_star);
-        } else {
-            favoriteButton.setImageResource(R.drawable.ic_star_outline);
-        }
     }
 
     private void handleFavoriteMovieButton() {
@@ -196,6 +189,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         Gson gson = new Gson();
         moviesTO = gson.fromJson(jsonResults, MoviesTO.class);
         loadData();
+        movieDetailContainer.setVisibility(View.VISIBLE);
     }
 
     private void loadData() {
@@ -474,5 +468,14 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             videoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youTubeKey));
         }
         startActivity(videoIntent);
+    }
+
+    private void showAsFavorite(boolean isFavoriteMovie) {
+
+        if (isFavoriteMovie) {
+            favoriteButton.setImageResource(R.drawable.ic_star_accent);
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_star_outline_accent);
+        }
     }
 }
