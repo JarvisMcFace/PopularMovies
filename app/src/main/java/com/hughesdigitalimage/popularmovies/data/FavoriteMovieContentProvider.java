@@ -109,6 +109,8 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         contentValues.put(FavoriteMoviesContract.RELEASE_DATE, popularMovieDetailsTO.getReleaseDate());
         contentValues.put(FavoriteMoviesContract.POSTER_PATH, popularMovieDetailsTO.getPosterPath());
         contentValues.put(FavoriteMoviesContract.BACKDROP_PATH, popularMovieDetailsTO.getBackdropPath());
+        contentValues.put(FavoriteMoviesContract.VOTE_AVERAGE, popularMovieDetailsTO.getVoteAverage());
+        contentValues.put(FavoriteMoviesContract.POPULARITY, popularMovieDetailsTO.getPopularity());
 
         return contentValues;
     }

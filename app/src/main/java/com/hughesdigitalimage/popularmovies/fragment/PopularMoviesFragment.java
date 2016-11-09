@@ -51,6 +51,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private List<PopularMovieDetailsTO> moviesTOList;
     private PopularMoviesTO popularMoviesTO;
     private boolean isShowingFavorites;
+    private Menu menu;
 
     @Nullable
     @Override
@@ -78,11 +79,15 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.sort_menu, menu);
+        this.menu = menu;
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
 
         int id = item.getItemId();
 
@@ -169,17 +174,39 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void showFavoriteMovies() {
 
-        ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
-        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+        if (isShowingFavorites){
+            isShowingFavorites = false;
+            adapter=null;
+            moviesTOList= null;
+            fetchPopularMovies();
+        } else {
+            isShowingFavorites = true;
+            ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
+            Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
 
-        if (cursor == null || cursor.getCount() == 0){
-            Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
+            if (cursor == null || cursor.getCount() == 0){
+                Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+
+            moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
+            isShowingFavorites =true;
+            loadData();
+        }
+
+        switchDrawable(isShowingFavorites);
+    }
+
+    private void switchDrawable(boolean isFavorite){
+        MenuItem menuItem =  menu.findItem(R.id.sort_favorite);
+        if (menuItem == null) {
             return;
         }
 
-        moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
-        isShowingFavorites =true;
-        loadData();
-
+        if (isFavorite){
+            menuItem.setIcon(R.drawable.ic_star_accent);
+        } else {
+            menuItem.setIcon(R.drawable.ic_star_outline_accent);
+        }
     }
 }

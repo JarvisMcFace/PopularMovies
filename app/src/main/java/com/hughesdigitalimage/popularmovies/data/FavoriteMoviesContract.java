@@ -13,4 +13,6 @@ public final class FavoriteMoviesContract {
     public static final String RELEASE_DATE = "releaseDate";
     public static final String POSTER_PATH = "posterPath";
     public static final String BACKDROP_PATH = "backdropPath";
+    public static final String VOTE_AVERAGE = "voteAverage";
+    public static final String POPULARITY = "popularity";
 }

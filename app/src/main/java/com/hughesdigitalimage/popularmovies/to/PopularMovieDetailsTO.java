@@ -44,13 +44,15 @@ public class PopularMovieDetailsTO implements Parcelable {
     @SerializedName("vote_average")
     private Double voteAverage;
 
-    public PopularMovieDetailsTO(Integer movieId,String title, String releaseDate, String overview, String posterPath, String backdropPath) {
+    public PopularMovieDetailsTO(Integer movieId, String title, String releaseDate, String overview, String posterPath, String backdropPath, Double voteAverage, Double popularity) {
         this.posterPath = posterPath;
         this.overview = overview;
         this.title = title;
         this.backdropPath = backdropPath;
         this.releaseDate = releaseDate;
         this.id = movieId;
+        this.voteAverage = voteAverage;
+        this.popularity = popularity;
     }
 
     public String getPosterPath() {

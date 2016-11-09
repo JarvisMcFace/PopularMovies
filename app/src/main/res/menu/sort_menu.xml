@@ -3,18 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/sort_favorite"
+        android:icon="@drawable/ic_star_outline_accent"
+        android:title="@string/sort_menu"
+        app:showAsAction="always"></item>
+
+    <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort_white_24dp"
         android:title="@string/sort_menu"
         app:showAsAction="always">
 
-
         <menu>
-            <item android:id="@+id/sort_most_popular"
+            <item
+                android:id="@+id/sort_most_popular"
                 android:title="@string/sort_most_popular" />
-            <item android:id="@+id/sort_top_rated"
-                android:title="@string/sort_top_rated" />
-            <item android:id="@+id/sort_favorite"
+            <item
+                android:id="@+id/sort_top_rated"
                 android:title="@string/sort_top_rated" />
         </menu>
     </item>

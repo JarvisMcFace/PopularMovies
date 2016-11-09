@@ -45,10 +45,9 @@ public class FavoriteMovieCursorHelper {
         final int releaseDateIndex = cursor.getColumnIndex(FavoriteMoviesContract.RELEASE_DATE);
         final int posterPathIndex = cursor.getColumnIndex(FavoriteMoviesContract.POSTER_PATH);
         final int backdropPathIndex = cursor.getColumnIndex(FavoriteMoviesContract.BACKDROP_PATH);
-
-
+        final int voteAverageIndex = cursor.getColumnIndex(FavoriteMoviesContract.VOTE_AVERAGE);
+        final int votePopularityIndex = cursor.getColumnIndex(FavoriteMoviesContract.POPULARITY);
         try {
-
 
             int movieID = Integer.parseInt(cursor.getString(movieIDIndex));
             String title = cursor.getString(titleIndex);
@@ -56,16 +55,14 @@ public class FavoriteMovieCursorHelper {
             String releaseDate =cursor.getString(releaseDateIndex);
             String posterPath = cursor.getString(posterPathIndex);
             String backdropPath = cursor.getString(backdropPathIndex);
+            Double voteAverage = Double.parseDouble(cursor.getString(voteAverageIndex));
+            Double popularity = Double.parseDouble(cursor.getString(votePopularityIndex));
 
-            return new PopularMovieDetailsTO(movieID,title,releaseDate,overview,posterPath,backdropPath);
-
+            return new PopularMovieDetailsTO(movieID,title,releaseDate,overview,posterPath,backdropPath,voteAverage,popularity);
 
         } catch (Exception ex) {
             Log.d(PopularMoviesFragment.class.getSimpleName(), "getPopularMovieDetailsTO: ");
             return null;
         }
-
-
-
     }
 }

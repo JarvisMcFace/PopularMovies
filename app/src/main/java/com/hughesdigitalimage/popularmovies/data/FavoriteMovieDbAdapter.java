@@ -23,7 +23,9 @@ public class FavoriteMovieDbAdapter {
                     + FavoriteMoviesContract.OVERVIEW + " TEXT NOT NULL, "
                     + FavoriteMoviesContract.RELEASE_DATE + " TEXT NOT NULL, "
                     + FavoriteMoviesContract.POSTER_PATH + " TEXT NOT NULL, "
-                    + FavoriteMoviesContract.BACKDROP_PATH + " TEXT NOT NULL)";
+                    + FavoriteMoviesContract.BACKDROP_PATH + " TEXT NOT NULL, "
+                    + FavoriteMoviesContract.VOTE_AVERAGE + " TEXT NOT NULL, "
+                    + FavoriteMoviesContract.POPULARITY + " TEXT NOT NULL)";
 
 
     private final Context context;
