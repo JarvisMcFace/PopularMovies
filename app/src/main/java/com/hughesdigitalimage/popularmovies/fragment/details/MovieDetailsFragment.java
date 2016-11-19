@@ -112,11 +112,12 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
 
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getExtras();
 
-        if (bundle != null) {
+        if (bundle != null && !isTablet ) {
             popularMovieDetailsTO = bundle.getParcelable(EXTRA_MOVIE_DETAILS_TO);
         }
 
@@ -126,7 +127,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         movieID = String.valueOf(popularMovieDetailsTO.getId());
         setupViews();
 
-        isTablet = getResources().getBoolean(R.bool.is_tablet);
+
         videoRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_video_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         videoRecyclerView.setLayoutManager(layoutManager);
