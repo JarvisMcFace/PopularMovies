@@ -127,11 +127,9 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         movieID = String.valueOf(popularMovieDetailsTO.getId());
         setupViews();
 
-
         videoRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_video_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         videoRecyclerView.setLayoutManager(layoutManager);
-
 
         setupFavoriteButton();
         fetchMovieDetails();
@@ -220,8 +218,8 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
 
         FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinnerMovieDetails);
+        FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
         if (!isTablet){
-            FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
         }
 
 
@@ -229,9 +227,9 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             String releaseYear = getReleaseYearDate();
 
             if (!isTablet){
-                collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
-                toolbarPoster.setImageAlpha(95);
             }
+            collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
+            toolbarPoster.setImageAlpha(95);
 
             year.setText(releaseYear);
             overview.setText(popularMovieDetailsTO.getOverview());
