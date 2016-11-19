@@ -3,8 +3,10 @@ package com.hughesdigitalimage.popularmovies.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.hughesdigitalimage.popularmovies.R;
+import com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment;
 
 public class PopularMoviesActivity extends AppCompatActivity {
 
@@ -15,6 +17,17 @@ public class PopularMoviesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+    }
+
+    public void updateFavoriteMovies() {
+
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        PopularMoviesFragment popularMoviesFragment = (PopularMoviesFragment) fragmentManager.findFragmentById(R.id.popular_movie_fragment);
+
+        if (popularMoviesFragment != null) {
+            popularMoviesFragment.updateFavoriteMovies();
+            Log.d("PopularMoviesActivity", "David: " + "updateFavoriteMovies() called");
+        }
     }
 
 }

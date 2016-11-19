@@ -29,6 +29,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.hughesdigitalimage.popularmovies.R;
+import com.hughesdigitalimage.popularmovies.activity.PopularMoviesActivity;
 import com.hughesdigitalimage.popularmovies.activity.ReviewDetailActivity;
 import com.hughesdigitalimage.popularmovies.adapter.video.MovieVideoAdapter;
 import com.hughesdigitalimage.popularmovies.data.FavoriteMovieContentProvider;
@@ -93,6 +94,13 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
     private MovieVideoAdapter movieVideoAdapter;
     private ImageView favoriteButton;
     private boolean isFavoriteMovie;
+    private boolean isTablet;
+
+    public static MovieDetailsFragment getInstance(PopularMovieDetailsTO popularMovieDetailsTO) {
+        MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
+        movieDetailsFragment.setPopularMovieDetailsTO(popularMovieDetailsTO);
+        return movieDetailsFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -112,9 +120,13 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             popularMovieDetailsTO = bundle.getParcelable(EXTRA_MOVIE_DETAILS_TO);
         }
 
+        if (popularMovieDetailsTO == null) {
+            return;
+        }
         movieID = String.valueOf(popularMovieDetailsTO.getId());
         setupViews();
 
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
         videoRecyclerView = (RecyclerView) rootView.findViewById(R.id.movie_video_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         videoRecyclerView.setLayoutManager(layoutManager);
@@ -152,7 +164,7 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             }
         });
         Application application = getActivity().getApplication();
-        isFavoriteMovie = IsMovieAFavoriteMovie.execute(application,popularMovieDetailsTO.getId().toString());
+        isFavoriteMovie = IsMovieAFavoriteMovie.execute(application, popularMovieDetailsTO.getId().toString());
 
         showAsFavorite(isFavoriteMovie);
     }
@@ -169,19 +181,27 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
             showAsFavorite(isFavoriteMovie);
             String selection = FavoriteMoviesContract.MOVIE_ID + " = ?";
             String[] selectionArgs = {popularMovieDetailsTO.getId().toString()};
-            contentResolver.delete(FavoriteMovieContentProvider.CONTENT_URI,selection,selectionArgs);
+            contentResolver.delete(FavoriteMovieContentProvider.CONTENT_URI, selection, selectionArgs);
+
         } else {
             isFavoriteMovie = true;
             showAsFavorite(isFavoriteMovie);
             ContentValues contentValues = FavoriteMovieContentProvider.getContentValues(popularMovieDetailsTO);
             contentResolver.insert(FavoriteMovieContentProvider.CONTENT_URI, contentValues);
         }
+
+        if (isTablet) {
+            PopularMoviesActivity activity = (PopularMoviesActivity) getActivity();
+            activity.updateFavoriteMovies();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        movieVideoAdapter.onSaveInstanceState(outState);
+        if (movieVideoAdapter != null) {
+            movieVideoAdapter.onSaveInstanceState(outState);
+        }
     }
 
 
@@ -199,13 +219,19 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
 
         FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinnerMovieDetails);
-        FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
+        if (!isTablet){
+            FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
+        }
+
 
         if (moviesTO != null) {
             String releaseYear = getReleaseYearDate();
 
-            collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
-            toolbarPoster.setImageAlpha(95);
+            if (!isTablet){
+                collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
+                toolbarPoster.setImageAlpha(95);
+            }
+
             year.setText(releaseYear);
             overview.setText(popularMovieDetailsTO.getOverview());
 
@@ -477,5 +503,9 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
         } else {
             favoriteButton.setImageResource(R.drawable.ic_star_outline_accent);
         }
+    }
+
+    public void setPopularMovieDetailsTO(PopularMovieDetailsTO popularMovieDetailsTO) {
+        this.popularMovieDetailsTO = popularMovieDetailsTO;
     }
 }

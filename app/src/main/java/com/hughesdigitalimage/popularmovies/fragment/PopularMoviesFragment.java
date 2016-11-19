@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,6 +54,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private PopularMoviesTO popularMoviesTO;
     private boolean isShowingFavorites;
     private Menu menu;
+    private boolean isTablet;
 
     @Nullable
     @Override
@@ -67,7 +70,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         setHasOptionsMenu(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -81,13 +84,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         inflater.inflate(R.menu.sort_menu, menu);
         this.menu = menu;
         super.onCreateOptionsMenu(menu, inflater);
+        switchDrawable(isShowingFavorites);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
 
         int id = item.getItemId();
 
@@ -110,9 +112,20 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     @Override
     public void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO) {
-        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-        intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
-        startActivity(intent);
+
+        if (isTablet) {
+            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.getInstance(popularMovieDetailsTO);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.activity_movie_details_fragment,movieDetailsFragment);
+            fragmentTransaction.commit();
+        } else {
+            Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+            intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
+            startActivity(intent);
+        }
+
     }
 
     @Override
@@ -127,6 +140,21 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             moviesTOList.addAll(popularMoviesTO.getResults());
         }
         loadData();
+    }
+
+    public void updateFavoriteMovies() {
+
+        if (!isShowingFavorites){
+            return;
+        }
+        ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
+        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+        moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
+
+        if (adapter != null) {
+            adapter.setMoveResults(moviesTOList);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void fetchPopularMovies() {
@@ -170,6 +198,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             adapter = new MovieAdapter(moviesTOList, contextWeakReference, weakMovieDetailsCallbacks);
             recyclerView.setAdapter(adapter);
         }
+        switchDrawable(isShowingFavorites);
     }
 
     private void showFavoriteMovies() {
@@ -181,23 +210,28 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             fetchPopularMovies();
         } else {
             isShowingFavorites = true;
-            ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
-            Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
-
-            if (cursor == null || cursor.getCount() == 0){
-                Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-
-            moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
-            isShowingFavorites =true;
-            loadData();
+            retrieveFavoriteMovies();
         }
 
         switchDrawable(isShowingFavorites);
     }
 
+    private void retrieveFavoriteMovies() {
+        ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
+        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+
+        if (cursor == null || cursor.getCount() == 0){
+            Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
+        }
+
+        moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
+        loadData();
+    }
+
     private void switchDrawable(boolean isFavorite){
+        if (menu == null) {
+            return;
+        }
         MenuItem menuItem =  menu.findItem(R.id.sort_favorite);
         if (menuItem == null) {
             return;
@@ -209,4 +243,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             menuItem.setIcon(R.drawable.ic_star_outline_accent);
         }
     }
+
+
 }

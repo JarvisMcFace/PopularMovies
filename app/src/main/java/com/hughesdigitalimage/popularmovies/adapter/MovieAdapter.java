@@ -25,9 +25,6 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int VIEW_TYPE_MOVIE_LISTING = 1;
-    private static final int VIEW_TYPE_MOVIE_EMPTY_STATE = 2;
-
     private List<PopularMovieDetailsTO> moveResults;
     private WeakReference<Context> contextWeakReference;
     private WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks;
@@ -69,6 +66,9 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
+    public void setMoveResults(List<PopularMovieDetailsTO> moveResults) {
+        this.moveResults = moveResults;
+    }
 
     @Override
     public int getItemCount() {
