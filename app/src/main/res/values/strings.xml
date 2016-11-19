@@ -19,4 +19,5 @@
     <string name="videos">Play Videos</string>
     <string name="overview">OverView</string>
     <string name="activity_movie_review_content">Movie Review</string>
+    <string name="no_details_pick_a_movie">No Details, Pick a moveie</string>
 </resources>

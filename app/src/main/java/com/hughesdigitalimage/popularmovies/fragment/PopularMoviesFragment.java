@@ -55,6 +55,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private boolean isShowingFavorites;
     private Menu menu;
     private boolean isTablet;
+    private View emptyState;
 
     @Nullable
     @Override
@@ -74,6 +75,11 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
+
+        if (isTablet) {
+            emptyState = getActivity().findViewById(R.id.empty_state_details);
+            emptyState.setVisibility(View.VISIBLE);
+        }
 
         fetchPopularMovies();
     }
@@ -120,6 +126,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.activity_movie_details_fragment,movieDetailsFragment);
             fragmentTransaction.commit();
+
+            emptyState.setVisibility(View.GONE);
         } else {
             Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
             intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
@@ -147,9 +155,20 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         if (!isShowingFavorites){
             return;
         }
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.activity_movie_details_fragment);
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            emptyState.setVisibility(View.VISIBLE);
+        }
+
+
         ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
         Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
         moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
+
+
 
         if (adapter != null) {
             adapter.setMoveResults(moviesTOList);
