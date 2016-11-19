@@ -3,7 +3,6 @@ package com.hughesdigitalimage.popularmovies.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.hughesdigitalimage.popularmovies.R;
 import com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment;
@@ -26,7 +25,6 @@ public class PopularMoviesActivity extends AppCompatActivity {
 
         if (popularMoviesFragment != null) {
             popularMoviesFragment.updateFavoriteMovies();
-            Log.d("PopularMoviesActivity", "David: " + "updateFavoriteMovies() called");
         }
     }
 

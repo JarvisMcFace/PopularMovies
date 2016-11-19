@@ -219,15 +219,10 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         FetchMoviePoster.execute(contextWeakReference, retrievePosterURL, detailPoster, progressSpinnerMovieDetails);
         FetchMoviePoster.execute(contextWeakReference, retrieveCollapsingToolbarPosterURL, toolbarPoster, null);
-        if (!isTablet){
-        }
-
 
         if (moviesTO != null) {
             String releaseYear = getReleaseYearDate();
 
-            if (!isTablet){
-            }
             collapsingToolbarLayout.setTitle(popularMovieDetailsTO.getTitle());
             toolbarPoster.setImageAlpha(95);
 
@@ -354,7 +349,6 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         Gson gson = new Gson();
         movieVideoTO = gson.fromJson(movieVideoJSON, MovieVideoTO.class);
-        Log.d(TAG, "David: " + "performOnResponseMovieVideos() called with: movieVideoJSON = [" + movieVideoJSON + "]");
 
         if (movieVideoJSON == null) {
             return;
@@ -383,7 +377,6 @@ public class MovieDetailsFragment extends Fragment implements MovieVideoCallback
 
         Gson gson = new Gson();
         movieReviewTO = gson.fromJson(movieReviewsJSON, MovieReviewTO.class);
-        Log.d(TAG, "David: " + "performOnResponseMovieVideos() called with: movieVideoJSON = [" + movieReviewsJSON + "]");
 
         if (movieReviewsJSON == null) {
             return;
