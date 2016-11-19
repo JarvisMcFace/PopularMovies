@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,6 +57,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private Menu menu;
     private boolean isTablet;
     private View emptyState;
+    private PopularMovieDetailsTO popularMovieDetailsTO;
 
     @Nullable
     @Override
@@ -93,6 +95,14 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         switchDrawable(isShowingFavorites);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "David: " + "onResume() called: " );
+        if (isTablet && popularMovieDetailsTO != null) {
+         showMovieDetailsFragment(popularMovieDetailsTO);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,21 +129,27 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     @Override
     public void onMovieSelected(PopularMovieDetailsTO popularMovieDetailsTO) {
 
+        this.popularMovieDetailsTO = popularMovieDetailsTO;
         if (isTablet) {
-            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.getInstance(popularMovieDetailsTO);
+            showMovieDetailsFragment(popularMovieDetailsTO);
 
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.activity_movie_details_fragment,movieDetailsFragment);
-            fragmentTransaction.commit();
 
-            emptyState.setVisibility(View.GONE);
         } else {
             Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
             intent.putExtra(MovieDetailsFragment.EXTRA_MOVIE_DETAILS_TO, popularMovieDetailsTO);
             startActivity(intent);
         }
 
+    }
+
+    private void showMovieDetailsFragment(PopularMovieDetailsTO popularMovieDetailsTO) {
+        MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.getInstance(popularMovieDetailsTO);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activity_movie_details_fragment,movieDetailsFragment);
+        fragmentTransaction.commit();
+        emptyState.setVisibility(View.GONE);
     }
 
     @Override
