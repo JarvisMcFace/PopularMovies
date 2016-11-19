@@ -34,7 +34,7 @@
             android:name="com.hughesdigitalimage.popularmovies.fragment.PopularMoviesFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_widthPercent="35%"
+            app:layout_widthPercent="45%"
             tools:layout="@layout/fragment_popular_movies" />
 
         <FrameLayout
@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            app:layout_widthPercent="65%">
+            app:layout_widthPercent="55%">
 
             <LinearLayout
                 android:id="@+id/empty_state_details"

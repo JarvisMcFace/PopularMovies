@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,7 +74,12 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         isTablet = getResources().getBoolean(R.bool.is_tablet);
 
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager gridLayoutManager;
+        if (!isTablet){
+            gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        } else {
+            gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        }
         recyclerView.setLayoutManager(gridLayoutManager);
 
         if (isTablet) {
@@ -98,7 +102,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "David: " + "onResume() called: " );
+
         if (isTablet && popularMovieDetailsTO != null) {
          showMovieDetailsFragment(popularMovieDetailsTO);
         }

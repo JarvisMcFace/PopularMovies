@@ -25,7 +25,7 @@
                 android:background="@color/colorPrimary"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
+                app:layout_scrollFlags="enterAlways|exitUntilCollapsed">
 
                 <ImageView
                     android:id="@+id/toolbar_poster"
