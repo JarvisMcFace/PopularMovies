@@ -45,7 +45,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     public final static String POPULAR_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.popularMovieDetailsTO";
     public final static String POPULAR_MOVIES_LIST = "com.hughesdigitalimage.popularmovies.popularMoviesTO";
-    public final static String POPULAR_MOVIES_SHOWIING_FAVORITE = "com.hughesdigitalimage.popularmovies.isShowingFavorites";
+    public final static String POPULAR_MOVIES_SHOWING_FAVORITE = "com.hughesdigitalimage.popularmovies.isShowingFavorites";
+    public final static String POPULAR_MOVIES_SORT_ORDER = "com.hughesdigitalimage.popularmovies.sortOrder";
     public final static String MOVIE_DB_POSTER_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
     private static String TAG = "PopularMoviesFragment";
@@ -60,6 +61,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private boolean isTablet;
     private View emptyState;
     private PopularMovieDetailsTO popularMovieDetailsTO;
+    private enum SortOrder {NONE,MOST_POPULAR, TOP_RATED}
+    private SortOrder sortOrder;
 
     @Nullable
     @Override
@@ -71,8 +74,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null){
+        sortOrder = SortOrder.NONE;
+        if (savedInstanceState != null) {
             restoreOnRestoreInstanceState(savedInstanceState);
         }
 
@@ -81,8 +84,9 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         isTablet = getResources().getBoolean(R.bool.is_tablet);
 
+
         GridLayoutManager gridLayoutManager;
-        if (!isTablet){
+        if (!isTablet) {
             gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         } else {
             gridLayoutManager = new GridLayoutManager(getActivity(), 3);
@@ -94,7 +98,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             emptyState.setVisibility(View.VISIBLE);
         }
 
-        if (ListUtils.isEmpty(moviesTOList)){
+        if (ListUtils.isEmpty(moviesTOList)) {
             fetchPopularMovies();
         } else {
             loadData();
@@ -106,18 +110,21 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     private void restoreOnRestoreInstanceState(Bundle savedInstanceState) {
         popularMoviesTO = savedInstanceState.getParcelable(POPULAR_MOVIES_LIST);
         popularMovieDetailsTO = savedInstanceState.getParcelable(POPULAR_MOVIE_DETAILS_TO);
-        isShowingFavorites = savedInstanceState.getBoolean(POPULAR_MOVIES_SHOWIING_FAVORITE);
-        if (isShowingFavorites){
+        isShowingFavorites = savedInstanceState.getBoolean(POPULAR_MOVIES_SHOWING_FAVORITE);
+        sortOrder = (SortOrder) savedInstanceState.getSerializable(POPULAR_MOVIES_SORT_ORDER);
+        if (isShowingFavorites) {
             getFavoriteMovies();
         }
+
     }
 
     @Override
 
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(POPULAR_MOVIES_SHOWIING_FAVORITE,isShowingFavorites);
-        outState.putParcelable(POPULAR_MOVIE_DETAILS_TO,popularMovieDetailsTO);
-        outState.putParcelable(POPULAR_MOVIES_LIST,popularMoviesTO);
+        outState.putBoolean(POPULAR_MOVIES_SHOWING_FAVORITE, isShowingFavorites);
+        outState.putParcelable(POPULAR_MOVIE_DETAILS_TO, popularMovieDetailsTO);
+        outState.putParcelable(POPULAR_MOVIES_LIST, popularMoviesTO);
+        outState.putSerializable(POPULAR_MOVIES_SORT_ORDER,sortOrder);
         super.onSaveInstanceState(outState);
     }
 
@@ -135,7 +142,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         super.onResume();
 
         if (isTablet && popularMovieDetailsTO != null) {
-         showMovieDetailsFragment(popularMovieDetailsTO);
+            showMovieDetailsFragment(popularMovieDetailsTO);
         }
     }
 
@@ -145,11 +152,13 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         int id = item.getItemId();
 
         if (id == R.id.sort_most_popular) {
+            sortOrder = SortOrder.MOST_POPULAR;
             sortByMostPopular();
             return true;
         }
 
         if (id == R.id.sort_top_rated) {
+            sortOrder = SortOrder.TOP_RATED;
             sortByTopRated();
             return true;
         }
@@ -182,7 +191,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.activity_movie_details_fragment,movieDetailsFragment);
+        fragmentTransaction.replace(R.id.activity_movie_details_fragment, movieDetailsFragment);
         fragmentTransaction.commit();
         emptyState.setVisibility(View.GONE);
     }
@@ -203,7 +212,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     public void updateFavoriteMovies() {
 
-        if (!isShowingFavorites){
+        if (!isShowingFavorites) {
             return;
         }
 
@@ -216,9 +225,8 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
 
         ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
-        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI, null, null, null, null);
         moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
-
 
 
         if (adapter != null) {
@@ -248,7 +256,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         if (adapter != null) {
             Collections.sort(moviesTOList, new PopularMoviesComparator());
             loadData();
-            adapter.notifyDataSetChanged();
+
         }
     }
 
@@ -256,7 +264,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         if (adapter != null) {
             Collections.sort(moviesTOList, new TopRatedMoviesComparator());
             loadData();
-            adapter.notifyDataSetChanged();
         }
     }
 
@@ -269,16 +276,28 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
             WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
             adapter = new MovieAdapter(moviesTOList, contextWeakReference, weakMovieDetailsCallbacks);
+
+            switch (sortOrder) {
+                case MOST_POPULAR:
+                    Collections.sort(moviesTOList, new PopularMoviesComparator());
+                    adapter.notifyDataSetChanged();
+                    break;
+                case TOP_RATED:
+                    Collections.sort(moviesTOList, new TopRatedMoviesComparator());
+                    adapter.notifyDataSetChanged();
+                    break;
+            }
+
             recyclerView.setAdapter(adapter);
         }
     }
 
     private void showFavoriteMovies() {
 
-        if (isShowingFavorites){
+        if (isShowingFavorites) {
             isShowingFavorites = false;
-            adapter=null;
-            moviesTOList= null;
+            adapter = null;
+            moviesTOList = null;
             fetchPopularMovies();
         } else {
             isShowingFavorites = true;
@@ -295,25 +314,25 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void getFavoriteMovies() {
         ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
-        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
+        Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI, null, null, null, null);
 
-        if (cursor == null || cursor.getCount() == 0){
+        if (cursor == null || cursor.getCount() == 0) {
             Snackbar.make(rootView, getString(R.string.no_favorites), Snackbar.LENGTH_SHORT).show();
         }
 
         moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
     }
 
-    private void switchDrawable(boolean isFavorite){
+    private void switchDrawable(boolean isFavorite) {
         if (menu == null) {
             return;
         }
-        MenuItem menuItem =  menu.findItem(R.id.sort_favorite);
+        MenuItem menuItem = menu.findItem(R.id.sort_favorite);
         if (menuItem == null) {
             return;
         }
 
-        if (isFavorite){
+        if (isFavorite) {
             menuItem.setIcon(R.drawable.ic_star_accent);
         } else {
             menuItem.setIcon(R.drawable.ic_star_outline_accent);
