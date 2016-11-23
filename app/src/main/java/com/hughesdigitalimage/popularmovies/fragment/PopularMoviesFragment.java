@@ -30,6 +30,7 @@ import com.hughesdigitalimage.popularmovies.fragment.details.MovieDetailsFragmen
 import com.hughesdigitalimage.popularmovies.to.PopularMovieDetailsTO;
 import com.hughesdigitalimage.popularmovies.to.PopularMoviesTO;
 import com.hughesdigitalimage.popularmovies.util.GetTheMoveDatabaseAPIKey;
+import com.hughesdigitalimage.popularmovies.util.ListUtils;
 import com.hughesdigitalimage.popularmovies.util.NetworkUtil;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelper;
 import com.hughesdigitalimage.popularmovies.util.OkHttpHelperCallback;
@@ -42,12 +43,14 @@ import java.util.List;
 
 public class PopularMoviesFragment extends Fragment implements MovieDetailsCallbacks, OkHttpHelperCallback {
 
+    public final static String POPULAR_MOVIE_DETAILS_TO = "com.hughesdigitalimage.popularmovies.popularMovieDetailsTO";
+    public final static String POPULAR_MOVIES_LIST = "com.hughesdigitalimage.popularmovies.popularMoviesTO";
+    public final static String POPULAR_MOVIES_SHOWIING_FAVORITE = "com.hughesdigitalimage.popularmovies.isShowingFavorites";
     public final static String MOVIE_DB_POSTER_IMAGE_URL = "http://image.tmdb.org/t/p/w300";
 
     private static String TAG = "PopularMoviesFragment";
 
     private View rootView;
-    private String result;
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
     private List<PopularMovieDetailsTO> moviesTOList;
@@ -68,7 +71,11 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setRetainInstance(true);
+
+        if (savedInstanceState != null){
+            restoreOnRestoreInstanceState(savedInstanceState);
+        }
+
         setHasOptionsMenu(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
@@ -87,7 +94,31 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
             emptyState.setVisibility(View.VISIBLE);
         }
 
-        fetchPopularMovies();
+        if (ListUtils.isEmpty(moviesTOList)){
+            fetchPopularMovies();
+        } else {
+            loadData();
+        }
+
+
+    }
+
+    private void restoreOnRestoreInstanceState(Bundle savedInstanceState) {
+        popularMoviesTO = savedInstanceState.getParcelable(POPULAR_MOVIES_LIST);
+        popularMovieDetailsTO = savedInstanceState.getParcelable(POPULAR_MOVIE_DETAILS_TO);
+        isShowingFavorites = savedInstanceState.getBoolean(POPULAR_MOVIES_SHOWIING_FAVORITE);
+        if (isShowingFavorites){
+            getFavoriteMovies();
+        }
+    }
+
+    @Override
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(POPULAR_MOVIES_SHOWIING_FAVORITE,isShowingFavorites);
+        outState.putParcelable(POPULAR_MOVIE_DETAILS_TO,popularMovieDetailsTO);
+        outState.putParcelable(POPULAR_MOVIES_LIST,popularMoviesTO);
+        super.onSaveInstanceState(outState);
     }
 
 
@@ -213,7 +244,7 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     private void sortByMostPopular() {
-        
+
         if (adapter != null) {
             Collections.sort(moviesTOList, new PopularMoviesComparator());
             loadData();
@@ -231,13 +262,15 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
 
     private void loadData() {
 
+        switchDrawable(isShowingFavorites);
+
+
         if (moviesTOList != null) {
             WeakReference<MovieDetailsCallbacks> weakMovieDetailsCallbacks = new WeakReference<MovieDetailsCallbacks>(this);
             WeakReference<Context> contextWeakReference = new WeakReference<Context>(getActivity());
             adapter = new MovieAdapter(moviesTOList, contextWeakReference, weakMovieDetailsCallbacks);
             recyclerView.setAdapter(adapter);
         }
-        switchDrawable(isShowingFavorites);
     }
 
     private void showFavoriteMovies() {
@@ -256,6 +289,11 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
     }
 
     private void retrieveFavoriteMovies() {
+        getFavoriteMovies();
+        loadData();
+    }
+
+    private void getFavoriteMovies() {
         ContentResolver contentResolver = getActivity().getApplication().getContentResolver();
         Cursor cursor = contentResolver.query(FavoriteMovieContentProvider.CONTENT_URI,null,null,null,null);
 
@@ -264,7 +302,6 @@ public class PopularMoviesFragment extends Fragment implements MovieDetailsCallb
         }
 
         moviesTOList = FavoriteMovieCursorHelper.retrieveAllFavoriteMovies(cursor);
-        loadData();
     }
 
     private void switchDrawable(boolean isFavorite){
